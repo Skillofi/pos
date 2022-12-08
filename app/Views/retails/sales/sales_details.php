@@ -41,7 +41,7 @@
                     <div class="card card-flush py-4 flex-row-fluid">
                         <div class="card-header">
                             <div class="card-title">
-                                <h2>Order Details (<a href="<?= base_url($sales['invoice']) ?>" target="_blank" class="text-gray-600 text-hover-primary">#<?= $sales['reference_no'] ?></a>)</h2>
+                                <h2>Order Details (<a href="<?= base_url($sales['invoice']) ?>" target="_blank" class="text-gray-600 text-hover-primary">#RF-<?= $sales['reference_no'] ?></a>)</h2>
                             </div>
                         </div>
                         <div class="card-body pt-0">
@@ -314,7 +314,7 @@
                             <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
                                 <div class="card-header">
                                     <div class="card-title">
-                                        <h2>Order #<?= $sales['reference_no'] ?></h2>
+                                        <h2>Order #RF-<?= $sales['reference_no'] ?></h2>
                                     </div>
                                 </div>
                                 <div class="card-body pt-0">

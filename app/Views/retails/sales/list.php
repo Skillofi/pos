@@ -50,6 +50,7 @@
                                 <thead>
                                     <tr>
                                         <th>Order ID</th>
+                                        <th>Reference no</th>
                                         <th>Date Time</th>
                                         <th>Customer</th>
                                         <th>Invoice Total</th>
@@ -102,6 +103,12 @@
                         data: "sales.id",
                         mRender: (data, type, full) => {
                             return `${full.id}`;
+                        },
+                    },
+                    {
+                        data: "sales.reference_no",
+                        mRender: (data, type, full) => {
+                            return `RF-${full.reference_no}`;
                         },
                     },
                     {

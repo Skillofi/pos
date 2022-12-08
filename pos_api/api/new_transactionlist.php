@@ -6,8 +6,11 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 require '../db.php';
 
 $where = '';
-if (!empty($_REQUEST['date'])) {
-    $where .= " AND date(post_date)='" . $_REQUEST['date'] . "'";
+if (!empty($_REQUEST['from_date'])) {
+    $where .= " AND date(post_date) >='" . $_REQUEST['from_date'] . "'";
+}
+if (!empty($_REQUEST['end_date'])) {
+    $where .= " AND date(post_date) <='" . $_REQUEST['end_date'] . "'";
 }
 if (!empty($_REQUEST['orderID'])) {
     $where .= " AND ID='" . $_REQUEST['orderID'] . "'";

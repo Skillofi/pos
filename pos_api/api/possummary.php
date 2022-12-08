@@ -39,6 +39,9 @@ where post_type = 'shop_order' and date(p.post_date) >= '".$_REQUEST['date_from'
 	$paypal=0;
 	$creditcard=0;
 	$others=0;
+	$zelle = 0;
+	$cash_app = 0;
+	
 $d=array();
 	while($row = $result->fetch_assoc())
 	{
@@ -62,6 +65,10 @@ $d=array();
 			$paypal += $row['order_total'];
 		else if( $method == 'braintree_credit_card')
 			$creditcard += $row['order_total'];
+		else if( $method == 'zelle')
+			$zelle += $row['order_total'];
+		else if( $method == 'cash_app')
+			$cash_app += $row['order_total'];
 		else
 			$others += $row['order_total'];
 	}
@@ -92,6 +99,8 @@ $d=array();
 		'pos_check'=>$pos_check,
 		'paypal'=>$paypal,
 		'creditcard'=>$creditcard,
+		'zelle' => $zelle,
+        'cash_app' => $cash_app,
 		'others'=>$others
 	);
 

@@ -51,12 +51,6 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Reference Number</label>
-                                    <input type="number" class="form-control" id="reference_no" placeholder="Reference No.">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
                                     <label>Warehouse *</label>
                                     <select class="form-control warehouse" name="warehouse" id="warehouse">
                                         <option value="Stone Mountain">Stone Mountain</option>
@@ -163,8 +157,10 @@
                                     <option value="Gift Card">Gift Card</option>
                                     <option value="Credit Card">Credit Card</option>
                                     <option value="Cheque">Cheque</option>
-                                    <option value="Other">Other</option>
                                     <option value="Deposite">Deposite</option>
+                                    <option value="Zelle">Zelle</option>
+                                    <option value="Cash App">Cash App </option>
+                                    <option value="Other">Others</option>
                                 </select>
                             </div>
                         </div>
@@ -846,7 +842,7 @@
         var csrfHash = $('.pos_csrfname').val(); // CSRF hash
         data['customer'] = $(".customer").val();
         data['date_time'] = $("#date_time").val();
-        data['reference_no'] = $("#reference_no").val();
+        // data['reference_no'] = $("#reference_no").val();
         data['warehouse'] = $("#warehouse").val();
         data['tax'] = $("#tax").val();
         data['discount'] = $("#discount").val();

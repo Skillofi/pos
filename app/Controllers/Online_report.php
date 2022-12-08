@@ -167,25 +167,6 @@ class Online_report extends BaseController
             array("Attachment" => false)
         );
         exit(0);
-
-        // $config = array(
-        //     'protocol' => 'smtp',
-        //     'smtp_host' => 'smtp.gmail.com',
-        //     'smtp_port' => '587',
-        //     'smtp_user' => 'salahoddin88@gmail.com',
-        //     'smtp_pass' => 'dbouxpykfztkdnhj',
-        //     'mailtype'  => 'html',
-        //     'charset'   => 'utf-8'
-        // );
-
-        // $email = \Config\Services::email();
-        // $email->initialize($config);
-        // $email->setFrom('salahoddin88@gmail.com', 'Your Name');
-        // $email->setTo('salahoddin88@gmail.com');
-        // $email->setSubject('Email Test');
-        // $email->setMessage('Testing the email class.');
-
-        // $email->send();
     }
     
     public function mail_pdf_report(){
@@ -193,6 +174,7 @@ class Online_report extends BaseController
         $fromDate = date('M d,Y');
         $endDate = date('M d,Y');
         $URLDate = (isset($_POST['date']) ? $_POST['date'] : date('Y-m-d'));
+        $email = $_POST['email'];
         
         if (isset($_POST['date'])) {
             $dates = $_POST['date'];
@@ -262,7 +244,8 @@ class Online_report extends BaseController
         $email->setNewline("\r\n");
         $email->setCRLF("\r\n");
         $email->setFrom('billing@georgiaphonecase.com', 'Georgia Phone Case');
-        $email->setTo('salahoddin88@gmail.com');
+        $email->setTo($email);
+        // $email->setTo('salahoddin88@gmail.com');
         $email->setSubject($subject);
         $email->setMessage($message);
         $email->attach($name);

@@ -81,10 +81,10 @@ class Retail_sales extends BaseController
 
     public function add_sales(){
         if ($this->request->getMethod() === 'post') {
+            $salesModel = model(SalesModel::class);
             $data = $this->request->getPost('data');
             $customer_id = $data['customer'];
             $date_time = $data['date_time'];
-            $reference_no = $data['reference_no'];
             $warehouse = $data['warehouse'];
             $tax = $data['tax'];
             $discount = $data['discount'];
@@ -94,11 +94,11 @@ class Retail_sales extends BaseController
             $sale_note = $data['sale_note'];
             $staff_note = $data['staff_note'];
             $send_email = $data['send_email'];
-
             $paymentAmount = $data['amount'];
             $payment_method = $data['payment_method'];
             $payment_note = $data['payment_note'];
-            
+            $reference_no = $salesModel->selectMax('reference_no')->first()['reference_no'] + 1;
+            $reference_no = (str_pad($reference_no, 7, '0', STR_PAD_LEFT));
             $salesData = [
                 'customer_id' => $customer_id,
                 'date_time' => $date_time,
@@ -112,7 +112,7 @@ class Retail_sales extends BaseController
                 'sale_note' => $sale_note,
                 'staff_note' => $staff_note,
             ];
-            $salesModel = model(SalesModel::class);
+            
             $salesModel->insert($salesData);
             $salesId = $salesModel->insertID();
             if($payment_status == 'Partial' || $payment_status == 'Paid'){
@@ -222,7 +222,7 @@ class Retail_sales extends BaseController
                 $salesDetailsModel->update($salesDetailsId, $salesDetailsData);
                 $grandTotal = floatval($grandTotal)+ floatval($amount);
             }
-            $removedProducts = $data['removedProduct'];
+            $removedProducts = (isset($data['removedProduct'])) ? $data['removedProduct'] : [];
             if($removedProducts){
                 foreach($removedProducts as $salesDetailsId){
                     $salesDetailsModel->where('id', $salesDetailsId)->delete();
@@ -298,7 +298,7 @@ class Retail_sales extends BaseController
             ->orLike('customer.email', $searchValue)
             ->orLike('customer.phone', $searchValue)
             ->orderBy($columnName, $columnSortOrder)
-            ->join('customer', 'customer.id = sales.customer_id', 'right')
+            ->join('customer', 'customer.id = sales.customer_id', 'left')
             ->countAllResults();
             
             $records = $salesModel->select('sales.*, customer.name')
@@ -307,7 +307,7 @@ class Retail_sales extends BaseController
             ->orLike('customer.email', $searchValue)
             ->orLike('customer.phone', $searchValue)
             ->orderBy($columnName, $columnSortOrder)
-            ->join('customer', 'customer.id = sales.customer_id', 'right')
+            ->join('customer', 'customer.id = sales.customer_id', 'left')
             ->findAll($rowperpage, $start);
 
         $data = array();

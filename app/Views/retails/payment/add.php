@@ -24,8 +24,10 @@
             <option value="Gift Card">Gift Card</option>
             <option value="Credit Card">Credit Card</option>
             <option value="Cheque">Cheque</option>
-            <option value="Other">Other</option>
             <option value="Deposite">Deposite</option>
+            <option value="Zelle">Zelle</option>
+            <option value="Cash App">Cash App </option>
+            <option value="Other">Other</option>
         </select>
         <span class="text-danger payment_method-error"></span>
     </div>

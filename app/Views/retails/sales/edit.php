@@ -554,9 +554,11 @@
             })
         })
         let removedProduct = [];
-        $(".removedProduct").each(function(i, v) {
-            removedProduct.push($(v).val())
-        })
+        if($(".removedProduct").length > 0){
+            $(".removedProduct").each(function(i, v) {
+                removedProduct.push($(v).val())
+            })
+        }
 
         if (data['date_time'] == "") {
             toastr.error("Error", 'Please select date time');

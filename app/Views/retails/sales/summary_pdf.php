@@ -168,12 +168,20 @@
                             <td><?= $formatter->formatCurrency($chequeTotal, 'USD') ?></td>
                         </tr>
                         <tr>
-                            <td>Other</td>
-                            <td><?= $formatter->formatCurrency($otherTotal, 'USD') ?></td>
-                        </tr>
-                        <tr>
                             <td>Deposite</td>
                             <td><?= $formatter->formatCurrency($depositeTotal, 'USD') ?></td>
+                        </tr>
+                        <tr>
+                            <td>Zelle</td>
+                            <td><?= $formatter->formatCurrency($zelle, 'USD') ?></td>
+                        </tr>
+                        <tr>
+                            <td>Cash App</td>
+                            <td><?= $formatter->formatCurrency($cashApp, 'USD') ?></td>
+                        </tr>
+                        <tr>
+                            <td>Other</td>
+                            <td><?= $formatter->formatCurrency($otherTotal, 'USD') ?></td>
                         </tr>
                         <tr>
                             <td>Total Payment</td>

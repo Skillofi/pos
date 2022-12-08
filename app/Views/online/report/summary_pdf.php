@@ -110,7 +110,7 @@
     <div class="wrapper">
         <div class="row margin-0">
             <div class="col-sm-5">
-                <p><img style="padding-left: 50%;" src="<?=FCPATH?>public\uploads\<?= $data['system_setting']['logo']?>"></p>
+                <p><img style="padding-left: 50%;" src="<?= FCPATH ?>public\uploads\<?= $data['system_setting']['logo'] ?>"></p>
             </div>
         </div>
         <div class="row margin-0">
@@ -180,7 +180,15 @@
                             <td><?= $formatter->formatCurrency(($data['creditcard']) ? $data['creditcard'] : 0, 'USD') ?></td>
                         </tr>
                         <tr>
-                            <td>Ebay Card Payment</td>
+                            <td>CASH APP</td>
+                            <td><?= $formatter->formatCurrency(($data['cash_app']) ? $data['cash_app'] : 0, 'USD') ?></td>
+                        </tr>
+                        <tr>
+                            <td>ZELLE</td>
+                            <td><?= $formatter->formatCurrency(($data['zelle']) ? $data['zelle'] : 0, 'USD') ?></td>
+                        </tr>
+                        <tr>
+                            <td>OTHERS</td>
                             <td><?= $formatter->formatCurrency(($data['others']) ? $data['others'] : 0, 'USD') ?></td>
                         </tr>
                         <tr>

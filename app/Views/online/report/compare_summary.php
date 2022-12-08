@@ -165,7 +165,17 @@
                                         <td class="creditcard2">$0.00</td>
                                     </tr>
                                     <tr>
-                                        <td>Ebay Card Payment</td>
+                                        <td>CASH APP</td>
+                                        <td class="cash_app1">$0.00</td>
+                                        <td class="cash_app2">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ZELLE</td>
+                                        <td class="zelle1">$0.00</td>
+                                        <td class="zelle2">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>OTHERS</td>
                                         <td class="others1">$0.00</td>
                                         <td class="others2">$0.00</td>
                                     </tr>
@@ -299,6 +309,8 @@
                             $('.total_sale1').html(Init.formateAmount(result.date1.total_sale));
                             $('.total_shipping1').html(Init.formateAmount(result.date1.total_shipping));
                             $('.total_tax1').html(Init.formateAmount(result.date1.total_tax));
+                            $('.cash_app1').html(Init.formateAmount(result.date1.cash_app));
+                            $('.zelle1').html(Init.formateAmount(result.date1.zelle));
                             $('.date1').html(result.date1.date);
 
                             $('.items_count2').html(result.date2.items_count);
@@ -316,6 +328,8 @@
                             $('.total_sale2').html(Init.formateAmount(result.date2.total_sale));
                             $('.total_shipping2').html(Init.formateAmount(result.date2.total_shipping));
                             $('.total_tax2').html(Init.formateAmount(result.date2.total_tax));
+                            $('.cash_app2').html(Init.formateAmount(result.date1.cash_app));
+                            $('.zelle2').html(Init.formateAmount(result.date1.zelle));
                             $('.date2').html(result.date2.date);
                         } else {
                             toastr.error("Error", result.message);

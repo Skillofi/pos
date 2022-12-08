@@ -290,6 +290,9 @@
                         <option value="1">POS Cash</option>
                         <option value="2">POS Card</option>
                         <option value="3">POS Check</option>
+                        <option value="4">Zelle</option>
+                        <option value="5">Cash App</option>
+                        <option value="6">Others</option>
                     </select>
                 </div>
             </div>

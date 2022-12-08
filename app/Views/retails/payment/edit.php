@@ -24,8 +24,10 @@
             <option <?= ($payment['payment_method'] == "Gift Card") ? "selected" : "" ?> value="Gift Card">Gift Card</option>
             <option <?= ($payment['payment_method'] == "Credit Card") ? "selected" : "" ?> value="Credit Card">Credit Card</option>
             <option <?= ($payment['payment_method'] == "Cheque") ? "selected" : "" ?> value="Cheque">Cheque</option>
-            <option <?= ($payment['payment_method'] == "Other") ? "selected" : "" ?> value="Other">Other</option>
             <option <?= ($payment['payment_method'] == "Deposite") ? "selected" : "" ?> value="Deposite">Deposite</option>
+            <option <?= ($payment['payment_method'] == "Zelle") ? "selected" : "" ?> value="Zelle">Zelle</option>
+            <option <?= ($payment['payment_method'] == "Cash App") ? "selected" : "" ?> value="Cash App">Cash App </option>
+            <option <?= ($payment['payment_method'] == "Other") ? "selected" : "" ?> value="Other">Other</option>
         </select>
         <span class="text-danger payment_method-error"></span>
     </div>

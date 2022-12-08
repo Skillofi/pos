@@ -72,9 +72,9 @@ require '../db.php';
 				}
 			
 			$tax=0;
-			if($applytax==1)
+			if($_POST['tax'.$ii]==1)
 			{
-			    $tax=($_POST['amount'.$ii]/100)*6;
+			    $tax =($_POST['amount'.$ii]/100)*6;
 			}
 			
 		    $sql_pro = "SELECT * FROM `wp_posts` 
@@ -352,6 +352,38 @@ require '../db.php';
 			VALUES ('".$poidf."','_line_total','".$_POST['fee_price']."')";
 			$conn->query($sqls2t);
 		}
+		$discount=0;
+		if(isset($_POST['discount_name'])  && $_POST['discount_amount']>0)
+		{
+			$discount=$_POST['discount_amount'];
+			$sqlpmf = "INSERT INTO wp_postmeta 
+			(`post_id`, `meta_key`, `meta_value`)
+			VALUES ('".$proid."','_discount','".$_POST['discount_name']."')";
+			$conn->query($sqlpmf);
+			
+			$sqlpmf1 = "INSERT INTO wp_postmeta 
+			(`post_id`, `meta_key`, `meta_value`)
+			VALUES ('".$proid."','_discount_amount','".$_POST['discount_amount']."')";
+			$conn->query($sqlpmf1);
+			
+			
+			$sqlsf = "INSERT INTO wp_woocommerce_order_items
+			(`order_item_name`, `order_item_type`, `order_id`)
+			VALUES ('".$_POST['discount_name']."','fee','".$proid."')";
+			$conn->query($sqlsf);
+		    $poidf = $conn->insert_id;
+		    
+
+			$sqls1t = "INSERT INTO wp_woocommerce_order_itemmeta
+			(`order_item_id`, `meta_key`, `meta_value`)
+			VALUES ('".$poidf."','label','Tax')";
+			$conn->query($sqls1t);
+			
+			$sqls2t = "INSERT INTO wp_woocommerce_order_itemmeta
+			(`order_item_id`, `meta_key`, `meta_value`)
+			VALUES ('".$poidf."','_line_total','".$_POST['discount_anount']."')";
+			$conn->query($sqls2t);
+		}
 		$sp=0;
 		if(isset($_POST['shipping_type']) && $_POST['shipping_type']>0 && $_POST['shipping_price']>0)
 		{
@@ -383,7 +415,7 @@ require '../db.php';
 		
 		$sqlpm = "INSERT INTO wp_postmeta 
 		(`post_id`, `meta_key`, `meta_value`)
-		VALUES ('".$proid."','_order_total','".($total+$fp+$sp+$total_tax)."')";
+		VALUES ('".$proid."','_order_total','".(($total - $discount)+$fp+$sp+$total_tax)."')";
 		$conn->query($sqlpm);
 		
 		$sqlpm = "INSERT INTO wp_postmeta 
@@ -409,6 +441,9 @@ require '../db.php';
 			if($_POST['payment_type']==1){$value="pos_cash"; $name='POS Cash';}
 			if($_POST['payment_type']==2){$value="pos_card"; $name='POS Card';}
 			if($_POST['payment_type']==3){$value="pos_check";$name='POS Check';}
+			if($_POST['payment_type']==4){$value="zelle";$name='Zelle';}
+			if($_POST['payment_type']==5){$value="cash_app";$name='Cash App';}
+			if($_POST['payment_type']==6){$value="others";$name='Others';}
 			$sqlpm1 = "INSERT INTO wp_postmeta 
 			(`post_id`, `meta_key`, `meta_value`)
 			VALUES ('".$proid."','_payment_method','".$value."')";

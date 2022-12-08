@@ -39,33 +39,36 @@
             <div class="card">
                 <!--begin::Card header-->
                 <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-                    <!--begin::Card title-->
-                    <div class="card-title">
-                        <!--begin::Search-->
-                        <div class="d-flex align-items-center mt-17">
-                            <div class="row" id="customerSearchBoxDiv"></div>
+                    <div class="row col-md-12">
+                        <!--begin::Card title-->
+                        <div class="col-md-4">
+                            <!--begin::Search-->
+                            <div class="d-flex align-items-center ">
+                                <div class="row" id="customerSearchBoxDiv"></div>
+                            </div>
+                            <!--end::Search-->
                         </div>
-                        <!--end::Search-->
-                    </div>
-                    <!--end::Card title-->
-                    <div class="card-title">
-                        <!--begin::Search-->
-                        <div class="d-flex align-items-center position-relative my-1">
-                            <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
-                            <span class="svg-icon svg-icon-1 position-absolute ms-4">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor" />
-                                    <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor" />
-                                </svg>
-                            </span>
-                            <!--end::Svg Icon-->
-                            <input type="text" data-kt-ecommerce-order-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Order" id="orderID" />
+                        <!--end::Card title-->
+                        <div class="col-md-4">
+                            <!--begin::Search-->
+                            <div class="d-flex align-items-center position-relative my-1">
+                                <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                                <span class="svg-icon svg-icon-1 position-absolute ms-4">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor" />
+                                        <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor" />
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                                <input type="text" data-kt-ecommerce-order-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Order" id="orderID" />
+                            </div>
+                            <!--end::Search-->
                         </div>
-                        <!--end::Search-->
+
+                        <!--end::Card title-->
                     </div>
-                    <!--end::Card title-->
                     <!--begin::Card toolbar-->
-                    <div class="card-toolbar flex-row-fluid float-end gap-5">
+                    <div class="card-toolbar flex-row-fluid float-end gap-0">
                         <!--begin::Flatpickr-->
                         <div class="input-group w-200px">
                             <input class="form-control form-control-solid rounded rounded-end-0" placeholder="Pick date" id="filter_start_date_picker" />
@@ -74,10 +77,12 @@
                             <input class="form-control form-control-solid rounded rounded-end-0" placeholder="Pick date" id="filter_end_date_picker" />
                         </div>
                         <!--end::Flatpickr-->
+                        <button class="btn btn-secondary today">Today</button>
+                        <button class="btn btn-secondary yesterday">Yesterday</button>
+                        <button class="btn btn-secondary last_week">Last Week</button>
+                        <button class="btn btn-secondary last_month">Last Month</button>
                     </div>
                     <!--end::Card toolbar-->
-                </div>
-                <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                     <div class="d-flex align-items-center gap-2 gap-lg-3 float-end">
                         <a href="<?= base_url('online_sales') ?>" class="btn btn-sm fw-bold btn-secondary">Reset</a>
                         <a href="javascript:;" class="btn btn-sm fw-bold btn-primary" id="searchbtn">Search</a>
@@ -123,7 +128,7 @@
         dataTables: () => {
             // Transaction List Datatable
             if ($.fn.DataTable.isDataTable('#transaction-list')) {
-                $('#transaction-list').dataTable().fnClearTable();
+                // $('#transaction-list').dataTable().fnClearTable();
                 $('#transaction-list').dataTable().fnDestroy();
             }
             $("#transaction-list").DataTable({
@@ -219,9 +224,7 @@
     const Events = {
         filterDate: () => {
             // On date change fire datatable reload
-            $("#searchbtn").on("click", () => {
-                Init.dataTables();
-            })
+
 
             $("#orderID").on("keyup", (e) => {
                 if (e.key === "Enter") {
@@ -327,6 +330,11 @@
             $("#customerSearchBox").val(`${name} - ${email}`)
             $(`#customer`).val(id);
             customerSearchBox.clear();
+        },
+        resultHide: () => {
+            $(`#customerResultDiv`).hide();
+            $(`#customerEmptyDiv`).hide();
+            $(`#resultInnerHTML`).html('');
         }
     }
 
@@ -352,11 +360,43 @@
         });
     }
 
+    $("#searchbtn").on("click", () => {
+        Init.dataTables();
+    })
+
     $(document).ready(() => {
         Init.datePicker();
         Init.dataTables();
         Events.filterDate();
         customerSearchBox.init();
+    })
+
+    $(document).on("click", ".today", function() {
+        var d = new Date();
+        $('#filter_start_date_picker').val(`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`)
+        $('#filter_end_date_picker').val(`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`)
+        Init.datePicker()
+    })
+    $(document).on("click", ".yesterday", function() {
+        var d = new Date();
+        d.setDate(d.getDate() - 1);
+        $('#filter_start_date_picker').val(`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`)
+        $('#filter_end_date_picker').val(`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`)
+        Init.datePicker()
+    })
+    $(document).on("click", ".last_week", function() {
+        var d = new Date();
+        d.setDate(d.getDate() - 7);
+        $('#filter_start_date_picker').val(`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`)
+        var d = new Date();
+        $('#filter_end_date_picker').val(`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`)
+        Init.datePicker()
+    })
+    $(document).on("click", ".last_month", function() {
+        var d = new Date();
+        $('#filter_start_date_picker').val(`${d.getFullYear()}/${d.getMonth()}/${d.getDate()}`)
+        $('#filter_end_date_picker').val(`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`)
+        Init.datePicker()
     })
 </script>
 <?= $this->endSection('content') ?>

@@ -161,9 +161,21 @@
                                         <td><?= $formatter->formatCurrency(($data['creditcard']) ? $data['creditcard'] : 0, 'USD') ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Ebay Card Payment</td>
+                                        <td>CASH APP</td>
+                                        <td><?= $formatter->formatCurrency(($data['cash_app']) ? $data['cash_app'] : 0, 'USD') ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ZELLE</td>
+                                        <td><?= $formatter->formatCurrency(($data['zelle']) ? $data['zelle'] : 0, 'USD') ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>OTHERS</td>
                                         <td><?= $formatter->formatCurrency(($data['others']) ? $data['others'] : 0, 'USD') ?></td>
                                     </tr>
+                                    <!-- <tr>
+                                        <td>Ebay Card Payment</td>
+                                        <td><?= $formatter->formatCurrency(($data['others']) ? $data['others'] : 0, 'USD') ?></td>
+                                    </tr> -->
                                     <tr>
                                         <td>Total</td>
                                         <td><?= $formatter->formatCurrency(($data['order_total']) ? $data['order_total'] : 0, 'USD') ?></td>

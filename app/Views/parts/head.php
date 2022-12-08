@@ -40,6 +40,12 @@
             "hideMethod": "fadeOut"
         };
     </script>
+    <style>
+        .form-check-custom.form-check-solid .form-check-input {
+            border: 0 !important;
+            background-color: #9b9b9b !important;
+        }
+    </style>
     <!--end::Vendors Javascript-->
 </head>
 <!--end::Head-->

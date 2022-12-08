@@ -91,6 +91,21 @@ class Retail_report extends BaseController
             ->selectSum('amount')
             ->first()['amount'];
 
+
+        $zelle = $paymentModel
+            ->where('DATE(datetime) >= ', $from_date)
+            ->where('DATE(datetime) <= ', $to_date)
+            ->where('payment_method', 'Zelle')
+            ->selectSum('amount')
+            ->first()['amount'];
+
+        $cashApp = $paymentModel
+            ->where('DATE(datetime) >= ', $from_date)
+            ->where('DATE(datetime) <= ', $to_date)
+            ->where('payment_method', 'Cash App')
+            ->selectSum('amount')
+            ->first()['amount'];
+
         $depositeTotal = $paymentModel
             ->where('DATE(datetime) >= ', $from_date)
             ->where('DATE(datetime) <= ', $to_date)
@@ -130,7 +145,8 @@ class Retail_report extends BaseController
                 'otherTotal' => $otherTotal,
                 'depositeTotal' => $depositeTotal,
                 'totalPayment' => $totalPayment,
-
+                'zelle' => $zelle,
+                'cashApp' => $cashApp,
             ];
         return view('retails/sales/summary', $data);
     }
@@ -217,6 +233,20 @@ class Retail_report extends BaseController
             ->selectSum('amount')
             ->first()['amount'];
 
+        $zelle = $paymentModel
+            ->where('DATE(datetime) >= ', $from_date)
+            ->where('DATE(datetime) <= ', $to_date)
+            ->where('payment_method', 'Zelle')
+            ->selectSum('amount')
+            ->first()['amount'];
+        
+        $cashApp = $paymentModel
+            ->where('DATE(datetime) >= ', $from_date)
+            ->where('DATE(datetime) <= ', $to_date)
+            ->where('payment_method', 'Cash App')
+            ->selectSum('amount')
+            ->first()['amount'];
+        
         $depositeTotal = $paymentModel
             ->where('DATE(datetime) >= ', $from_date)
             ->where('DATE(datetime) <= ', $to_date)
@@ -253,10 +283,11 @@ class Retail_report extends BaseController
             'giftCardTotal' => $giftCardTotal,
             'creditCardTotal' => $creditCardTotal,
             'chequeTotal' => $chequeTotal,
-            'otherTotal' => $otherTotal,
             'depositeTotal' => $depositeTotal,
             'totalPayment' => $totalPayment,
-
+            'zelle' => $zelle,
+            'cashApp' => $cashApp,
+            'otherTotal' => $otherTotal,
         ];
         $systemSettingModel = model(SystemSettingModel::class);
         $data['system_setting'] = $systemSettingModel->where('id', '1')->first();

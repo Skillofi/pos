@@ -96,12 +96,19 @@ WHERE post_id = '".$_REQUEST['id']."' AND meta_key='_fee_price'";
 $result_fee = $conn->query($sql_fee);
 $result_fee = $result_fee->fetch_assoc();
 
+$sql_discount = "SELECT * from `wp_postmeta`
+WHERE post_id = '".$_REQUEST['id']."' AND meta_key='_discount_amount'";
+$result_discount = $conn->query($sql_discount);
+$result_discount = $result_discount->fetch_assoc();
+
+
 $sql_shipping = "SELECT * from `wp_postmeta`
 WHERE post_id = '".$_REQUEST['id']."' AND meta_key='_order_shipping'";
 $result_shipping = $conn->query($sql_shipping);
 $result_shipping = $result_shipping->fetch_assoc();
 
 $fee =$result_fee? $result_fee['meta_value']  : 0 ;
+$discount = $result_discount? $result_discount['meta_value']  : 0 ;
 $shipping = $result_shipping ? $result_shipping['meta_value'] : 0 ;
 $q="SELECT  
 	mailmeta.meta_value as email,
@@ -182,9 +189,10 @@ $invoice=array(
 	'line_items'=>$line_items,
 	'shipping'=>number_format($shipping,2),
 	'fee'=>number_format($fee,2),
+	'discount' => number_format($discount, 2),
 	'total_tax'=>number_format($total_tax,2),
 	'subtotal'=> number_format($subtotal,2),
-	'gtotal' => number_format($subtotal + $shipping + $fee+$total_tax,2),
+	'gtotal' => number_format(($subtotal - $discount) + $shipping + $fee+$total_tax,2),
 	'paymentmethod'=> $paymentmethod
 );
 echo(json_encode($invoice));
