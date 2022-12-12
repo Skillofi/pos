@@ -36,10 +36,13 @@
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container container-xxl">
             <!--begin::About card-->
-            <div class="card">
+            <div class="card" id="kt_block_ui_1_target">
                 <!--begin::Body-->
+
                 <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-                    <div class="col-md-12">
+                    <div class="card-toolbar flex-row-fluid gap-5 justify-content-end">
+                        <!--begin::Flatpickr-->
+                        <a id="product_sync" onclick="Product.sync()" href="javascript:;" class="float-end btn btn-sm fw-bold btn-success ">Product Sync</a>
                         <a onclick="Product.addModal()" href="javascript:;" data-bs-toggle="modal" data-bs-target="#modal" class="float-end btn btn-sm fw-bold btn-secondary">Add Product</a>
                     </div>
                 </div>
@@ -145,6 +148,31 @@
     }
 
     const Product = {
+        sync: () => {
+            $("#product_sync").attr('disabled', true)
+            var target = document.querySelector("#kt_block_ui_1_target");
+            var blockUI = new KTBlockUI(target, {
+                message: '<div class="blockui-message"><span class="spinner-border text-primary"></span> Loading...</div>',
+            });
+            blockUI.block();
+            $.ajax({
+                url: `${siteURL}product/sync_products`,
+                type: "GET",
+                dataType: "JSON",
+                data: {},
+                success: (result) => {
+                    toastr.clear()
+                    if (result.status == 200) {
+                        blockUI.release();
+                        $("#product_sync").attr('disabled', false)
+                        toastr.success("Success", result.message);
+                    }
+                },
+                beforeSend: () => {
+                    toastr.info("Information", "Please wait your request is under process");
+                }
+            });
+        },
         addModal: () => {
             $.ajax({
                 url: `${siteURL}product/add_product`,

@@ -45,7 +45,7 @@
                                 <label class="required form-label">Terms & Conditions</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <textarea class="form-control" rows="10" name="terms"><?= $data['terms'] ?></textarea>
+                                <textarea class="form-control" id="terms" rows="10" name="terms"><?= $data['terms'] ?></textarea>
                                 <!--end::Input-->
                                 <span class="text-danger">
                                     <?= ($validation->hasError('terms')) ? $validation->getError('terms') : "" ?>
@@ -122,4 +122,17 @@
     <!--end::Content-->
 </div>
 <!--end::Content wrapper-->
+<script src="<?=base_url('public/admin/plugins/custom/ckeditor/ckeditor-classic.bundle.js')?>"></script>
+
+<script>
+ClassicEditor
+    .create(document.querySelector('#terms'))
+    .then(editor => {
+        console.log(editor);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+    
+</script>
 <?= $this->endSection('content') ?>

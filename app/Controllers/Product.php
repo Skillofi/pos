@@ -36,7 +36,7 @@ class Product extends BaseController
             return view('retails/product/add');
         }
     }
-
+    
     public function update_product(){
         $productModel = model(ProductModel::class);
         if ($this->request->getMethod() === 'post') {
@@ -64,7 +64,7 @@ class Product extends BaseController
             ]);
         }
     }
-
+    
     public function delete_product(){
         $productModel = model(ProductModel::class);
         if ($this->request->getMethod() === 'get' && isset($_GET['id'])) {
@@ -79,16 +79,16 @@ class Product extends BaseController
             return json_encode(array('status' => 400, 'message' => 'Bad Request'));
         }
     }
-
+    
     public function productJson()
     {
-
+        
         $request = service('request');
         $postData = $request->getGet();
-
+        
         $dtpostData = $postData;
         $response = array();
-
+        
         ## Read value
         $draw = $dtpostData['draw'];
         $start = $dtpostData['start'];
@@ -97,27 +97,27 @@ class Product extends BaseController
         $columnName = $dtpostData['columns'][$columnIndex]['data']; // Column name
         $columnSortOrder = $dtpostData['order'][0]['dir']; // asc or desc
         $searchValue = $dtpostData['search']['value']; // Search value
-
+        
         ## Total number of records without filtering
         $users = new ProductModel();
         $totalRecords = $users->select('id')
-            ->countAllResults();
-
+        ->countAllResults();
+        
         ## Total number of records with filtering
         $totalRecordwithFilter = $users->select('id')
-            ->orLike('name', $searchValue)
-            ->orLike('price', $searchValue)
-            ->orLike('stock', $searchValue)
-            ->countAllResults();
-
+        ->orLike('name', $searchValue)
+        ->orLike('price', $searchValue)
+        ->orLike('stock', $searchValue)
+        ->countAllResults();
+        
         ## Fetch records
         $records = $users->select('*')
-            ->orLike('name', $searchValue)
-            ->orLike('price', $searchValue)
-            ->orLike('stock', $searchValue)
-            ->orderBy($columnName, $columnSortOrder)
-            ->findAll($rowperpage, $start);
-
+        ->orLike('name', $searchValue)
+        ->orLike('price', $searchValue)
+        ->orLike('stock', $searchValue)
+        ->orderBy($columnName, $columnSortOrder)
+        ->findAll($rowperpage, $start);
+        
         $response = array(
             "draw" => intval($draw),
             "iTotalRecords" => $totalRecords,
@@ -125,10 +125,10 @@ class Product extends BaseController
             "aaData" => $records,
             "token" => csrf_hash()
         );
-
+        
         return $this->response->setJSON($response);
     }
-
+    
     public function search_product()
     {
         $request = service('request');
@@ -137,10 +137,55 @@ class Product extends BaseController
         $terms = $dtpostData['term'];
         $productModal = new ProductModel();
         $records = $productModal->select('*')
-            ->orLike('name', $terms)
-            ->orLike('code', $terms)
-            ->orderBy('name', 'ASC')
-            ->findAll();
+        ->orLike('name', $terms)
+        ->orLike('code', $terms)
+        ->orderBy('name', 'ASC')
+        ->findAll();
         return $this->response->setJSON($records);
+    }
+
+    public function sync_products(){
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://www.georgiaphonecase.com/pos_api/api/all_products.php",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $products = json_decode($response, true);
+        $productModel = model(ProductModel::class);
+        foreach($products as $product){
+            if(isset($product['id']) && $product['id']){
+                $checkProduct = $productModel->where('post_id', $product['id'])->first();
+                if(!$checkProduct){
+                    if($product['name'] && $product['price'] && $product['stock']){
+                        $data = [
+                            'name' => $product['name'],
+                            'code' => $product['id'],
+                            'price' => $product['price'],
+                            'stock' => $product['stock'],
+                            'post_id' => $product['id'],
+                        ];
+                        $response = $productModel->insert($data);   
+                    }
+                }else{
+                    $data = [
+                        'name' => $product['name'],
+                        'code' => $product['id'],
+                        'price' => $product['price'],
+                        'stock' => $product['stock'],
+                        'post_id' => $product['id'],
+                    ];
+                    $response = $productModel->update($checkProduct['id'], $data);   
+                }
+            }
+        }
+        return json_encode(['status' => 200, 'message' => 'Product sync has been completed']);
     }
 }

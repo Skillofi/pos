@@ -285,17 +285,22 @@
                 Init.datePicker()
             })
             $(document).on("click", ".last_week", function() {
-                var d = new Date();
-                d.setDate(d.getDate() - 7);
-                $('#kt_ecommerce_sales_flatpickr').val(`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`)
-                $("#pdf").val(`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`)
-                $("#search").val(`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`)
+                var startDate = new Date();
+                var endDate = new Date();
+                startDate.setDate(startDate.getDate() - 7);
+                var dateString = `${startDate.getFullYear()}/${startDate.getMonth()+1}/${startDate.getDate()} to ${endDate.getFullYear()}/${endDate.getMonth()+1}/${endDate.getDate()}`;
+                $('#kt_ecommerce_sales_flatpickr').val(`${dateString}`)
+                $("#pdf").val(`${dateString}`)
+                $("#search").val(`${dateString}`)
                 Init.datePicker()
             })
             $(document).on("click", ".last_month", function() {
-                $('#kt_ecommerce_sales_flatpickr').val(`${d.getFullYear()}/${d.getMonth()}/${d.getDate()}`)
-                $("#pdf").val(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`)
-                $("#search").val(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`)
+                var startDate = new Date();
+                var endDate = new Date();
+                var dateString = `${startDate.getFullYear()}/${startDate.getMonth()}/${startDate.getDate()} to ${endDate.getFullYear()}/${endDate.getMonth()+1}/${endDate.getDate()}`;
+                $('#kt_ecommerce_sales_flatpickr').val(`${dateString}`)
+                $("#pdf").val(`${dateString}`)
+                $("#search").val(`${dateString}`)
                 Init.datePicker()
             })
         }

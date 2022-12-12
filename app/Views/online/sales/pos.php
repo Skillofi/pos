@@ -131,10 +131,10 @@
                                             <td> Total Amount </td>
                                             <td>$<span class="totalAmount">0</span></td>
                                         </tr>
-                                        <tr class="dicountTR">
-                                            <td> Discount - <span id="discountTitleSpan"></span></td>
-                                            <td>$<span class="discountAmount">0</span></td>
-                                        </tr>
+                                        <!--<tr class="dicountTR">-->
+                                        <!--    <td> Discount - <span id="discountTitleSpan"></span></td>-->
+                                        <!--    <td>$<span class="discountAmount">0</span></td>-->
+                                        <!--</tr>-->
                                         <tr>
                                             <td> Total Tax</td>
                                             <td>$<span class="totalTax">0</span></td>
@@ -166,7 +166,7 @@
                                 <a href="javascript:void(0)" class="btn btn-bg-secondary removeTax"><i class="fa fa-minus"></i> Remmove Tax</a>
                                 <a href="javascript:void(0)" class="btn btn-bg-secondary feesA" data-bs-toggle="modal" data-bs-target="#feesModal"><i class="fa fa-money-bill"></i> Fee</a>
                                 <a href="javascript:void(0)" class="btn btn-bg-secondary shippingA" data-bs-toggle="modal" data-bs-target="#shippingModal"><i class="fa fa-truck"></i> Shipping</a>
-                                <a href="javascript:void(0)" class="btn btn-bg-secondary shippingA" data-bs-toggle="modal" data-bs-target="#discountModal"><i class="fa fa-money-bill"></i> Discount</a>
+                                <!--<a href="javascript:void(0)" class="btn btn-bg-secondary shippingA" data-bs-toggle="modal" data-bs-target="#discountModal"><i class="fa fa-money-bill"></i> Discount</a>-->
                                 <a href="javascript:void(0)" class="btn btn-bg-secondary checkoutModel"><i class="fa fa-shopping-cart"></i> Checkout</a>
                                 <a href="javascript:void(0)" class="btn btn-bg-secondary"><i class="fa fa-refresh"></i> Reset</a>
                             </div>

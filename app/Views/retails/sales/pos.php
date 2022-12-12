@@ -309,40 +309,40 @@
             $("#customerSearchBox").on('keyup', (e) => {
                 customerSearchBox.clear();
                 let searchVal = $("#customerSearchBox").val();
-                if (searchVal !== "" && searchVal != null && searchVal) {
-                    $.ajax({
-                        url: `${siteURL}customer/search_customer`,
-                        type: "GET",
-                        dataType: "JSON",
-                        data: {
-                            'term': searchVal
-                        },
-                        success: (result) => {
-                            $(`#customerResultInnerHTML`).html('');
-                            if (result.length > 0) {
-                                $.each(result, (i, val) => {
-                                    $(`#customerResultInnerHTML`).append(
-                                        `<div class="cutomer d-flex align-items-center p-3 rounded-3 border-hover border border-dashed border-gray-300 cursor-pointer mb-1 customers" data-kt-search-element="customer" data-id="${val.id}" onclick="customerSearchBox.process(${val.id}, '${val.name} ${val.phone}', '${val.email}')">
-                                        <div class="fw-semibold">
-                                            <span class="fs-6 text-gray-800 me-2">${val.name}</span>
-                                            <span class="badge badge-light">${val.phone} | ${val.email}</span>
-                                        </div>
-                                    </div>`
-                                    )
-                                })
-                                $(`#customerResultDiv`).show();
-                            } else {
-                                $(`#customerResultDiv`).hide();
-                                $(`#customerEmptyDiv`).show();
-                            }
-                        },
-                        beforeSend: () => {
-                            $(`#customerResultInnerHTML`).html('');
-                        },
-                    });
-                }
                 if (e.key === "Enter") {
                     e.preventDefault();
+                    if (searchVal !== "" && searchVal != null && searchVal) {
+                        $.ajax({
+                            url: `${siteURL}customer/search_customer`,
+                            type: "GET",
+                            dataType: "JSON",
+                            data: {
+                                'term': searchVal
+                            },
+                            success: (result) => {
+                                $(`#customerResultInnerHTML`).html('');
+                                if (result.length > 0) {
+                                    $.each(result, (i, val) => {
+                                        $(`#customerResultInnerHTML`).append(
+                                            `<div class="cutomer d-flex align-items-center p-3 rounded-3 border-hover border border-dashed border-gray-300 cursor-pointer mb-1 customers" data-kt-search-element="customer" data-id="${val.id}" onclick="customerSearchBox.process(${val.id}, '${val.name} ${val.phone}', '${val.email}')">
+                                            <div class="fw-semibold">
+                                                <span class="fs-6 text-gray-800 me-2">${val.name}</span>
+                                                <span class="badge badge-light">${val.phone} | ${val.email}</span>
+                                            </div>
+                                        </div>`
+                                        )
+                                    })
+                                    $(`#customerResultDiv`).show();
+                                } else {
+                                    $(`#customerResultDiv`).hide();
+                                    $(`#customerEmptyDiv`).show();
+                                }
+                            },
+                            beforeSend: () => {
+                                $(`#customerResultInnerHTML`).html('');
+                            },
+                        });
+                    }
                 }
             })
         },
@@ -403,47 +403,47 @@
             $("#productSearchBox").on('keyup', (e) => {
                 productSearchBox.clear();
                 let searchVal = $("#productSearchBox").val();
-                if (searchVal !== "" && searchVal != null && searchVal) {
-                    $.ajax({
-                        url: `${siteURL}product/search_product`,
-                        type: "GET",
-                        dataType: "JSON",
-                        data: {
-                            'term': searchVal
-                        },
-                        success: (result) => {
-                            $(`#productResultInnerHTML`).html('');
-                            if (result.length > 0) {
-                                $.each(result, (i, val) => {
-                                    if (val.id != undefined) {
-                                        $(`#productResultInnerHTML`).append(
-                                            `<div class="product d-flex align-items-center p-3 rounded-3 border-hover border border-dashed border-gray-300 cursor-pointer mb-1 products" data-kt-search-element="product" data-id="${val.id}" onclick="productSearchBox.process(${val.id}, '${val.name}', '${val.price}')">
-                                            <div class="fw-semibold">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <span class="fs-6 text-gray-800 me-2">${val.name} - <small>${val.code}</small></span><br>
-                                                        <span class="badge badge-light">Stock : ${val.stock}</span>
-                                                        <span class="badge badge-light">price : $${val.price}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>`
-                                        )
-                                    }
-                                })
-                                $(`#productResultDiv`).show();
-                            } else {
-                                $(`#productResultDiv`).hide();
-                                $(`#productEmptyDiv`).show();
-                            }
-                        },
-                        beforeSend: () => {
-                            $(`#productResultInnerHTML`).html('');
-                        },
-                    });
-                }
                 if (e.key === "Enter") {
                     e.preventDefault();
+                    if (searchVal !== "" && searchVal != null && searchVal) {
+                        $.ajax({
+                            url: `${siteURL}product/search_product`,
+                            type: "GET",
+                            dataType: "JSON",
+                            data: {
+                                'term': searchVal
+                            },
+                            success: (result) => {
+                                $(`#productResultInnerHTML`).html('');
+                                if (result.length > 0) {
+                                    $.each(result, (i, val) => {
+                                        if (val.id != undefined) {
+                                            $(`#productResultInnerHTML`).append(
+                                                `<div class="product d-flex align-items-center p-3 rounded-3 border-hover border border-dashed border-gray-300 cursor-pointer mb-1 products" data-kt-search-element="product" data-id="${val.id}" onclick="productSearchBox.process(${val.id}, '${val.name}', '${val.price}')">
+                                                <div class="fw-semibold">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <span class="fs-6 text-gray-800 me-2">${val.name} - <small>${val.code}</small></span><br>
+                                                            <span class="badge badge-light">Stock : ${val.stock}</span>
+                                                            <span class="badge badge-light">price : $${val.price}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>`
+                                            )
+                                        }
+                                    })
+                                    $(`#productResultDiv`).show();
+                                } else {
+                                    $(`#productResultDiv`).hide();
+                                    $(`#productEmptyDiv`).show();
+                                }
+                            },
+                            beforeSend: () => {
+                                $(`#productResultInnerHTML`).html('');
+                            },
+                        });
+                    }
                 }
             })
         },
@@ -643,7 +643,7 @@
                 <td class="productIndex">${productIndex}</td>
                 <td>${productName}</td>
                 <td>
-                    <input type="hidden" class="productId" data-id="${newProduct}" value="-1">
+                    <input type="hidden" class="productId" data-id="${newProduct}" value="${newProduct}">
                     <input type="hidden" class="productName productName-${newProduct}" data-id="${newProduct}" value="${productName}">
                     <input type="number" class="form-control productPrice productPrice-${newProduct}" data-id="${newProduct}" value="${productPrice}">
                     <input type="hidden" class="productAmount productAmount-${newProduct}" data-id="${newProduct}">

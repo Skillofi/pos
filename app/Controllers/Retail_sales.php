@@ -140,9 +140,10 @@ class Retail_sales extends BaseController
                 $salesDetailsModel->insert($salesDetailsData);
                 $grandTotal = floatval($grandTotal)+ floatval($amount);
             }
+            $grandTotal = floatval($grandTotal) - floatval($discount);
             $taxTotal = (floatval($grandTotal) * floatval($tax)) / 100;
-            $grandTotal = (floatval($grandTotal) - floatval($discount)) + floatval($taxTotal);
-            $response = $salesModel->update($salesId, ['grand_total' => $grandTotal]);
+            $grandTotal = ($grandTotal + floatval($taxTotal));
+            $response = $salesModel->update($salesId, ['grand_total' => $grandTotal, 'tax_calc' => $taxTotal]);
             $sendEmail = False;
             if($send_email == 1){
                 $sendEmail = True;
@@ -228,9 +229,10 @@ class Retail_sales extends BaseController
                     $salesDetailsModel->where('id', $salesDetailsId)->delete();
                 }
             }
+            $grandTotal = floatval($grandTotal) - floatval($discount);
             $taxTotal = (floatval($grandTotal) * floatval($tax)) / 100;
-            $grandTotal = (floatval($grandTotal) - floatval($discount)) + floatval($taxTotal);
-            $response = $salesModel->update($salesId, ['grand_total' => $grandTotal]);
+            $grandTotal = ($grandTotal + floatval($taxTotal));
+            $response = $salesModel->update($salesId, ['grand_total' => $grandTotal, 'tax_calc'=> $taxTotal]);
             $sendEmail = False;
             if ($send_email == 1) {
                 $sendEmail = True;

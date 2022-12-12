@@ -103,15 +103,16 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>Total</td>
-            <td> <?= $formatter->formatCurrency($grandTotal, 'USD') ?></td>
+            <td>Total <?=$grandTotal?></td>
+            <td> <?= $formatter->formatCurrency(floatval($grandTotal), 'USD') ?></td>
         </tr>
+        <?php $grandTotal -= floatval($sale['discount']); ?>
         <tr>
             <td></td>
             <td></td>
             <td></td>
             <td>Tax(<?= $sale['tax'] ?>%)</td>
-            <?php $taxCalc = (floatval($grandTotal) * floatval($sale['tax'])) / 100 ?>
+            <?php $taxCalc = (floatval($grandTotal) * floatval($sale['tax']) ) / 100 ?>
             <td> <?= $formatter->formatCurrency($taxCalc, 'USD') ?></td>
         </tr>
         <tr>

@@ -346,14 +346,19 @@
                                                         <td class="text-end"><?= $formatter->formatCurrency($salesDetail['amount'], 'USD') ?></td>
                                                     </tr>
                                                 <?php endforeach; ?>
+                                                <tr>
+                                                    <td colspan="3" class="text-end">Discount</td>
+                                                    <td class="text-end"><?= $formatter->formatCurrency($sales['discount'], 'USD') ?></td>
+                                                </tr>
+                                                <?php $grandTotal = $grandTotal - $sales['discount']; ?>
                                                 <?php $taxCalc = (floatval($grandTotal) * floatval($sales['tax'])) / 100 ?>
                                                 <tr>
                                                     <td colspan="3" class="text-end">VAT (<?= $sales['tax'] ?>%)</td>
                                                     <td class="text-end"> <?= $formatter->formatCurrency($taxCalc, 'USD') ?></td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="3" class="text-end">Discount</td>
-                                                    <td class="text-end"><?= $formatter->formatCurrency($sales['discount'], 'USD') ?></td>
+                                                    <td colspan="3" class="text-end">Shipping</td>
+                                                    <td class="text-end"> <?= $formatter->formatCurrency($sales['shipping'], 'USD') ?></td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="3" class="fs-3 text-dark text-end">Grand Total</td>

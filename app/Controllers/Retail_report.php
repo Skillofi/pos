@@ -15,10 +15,10 @@ class Retail_report extends BaseController
         if (isset($_GET['date'])) {
             $dates = $_GET['date'];
             $dateArray = explode(' to ', $dates);
-            if (isset($dateArray[0])) {
+            if (isset($dateArray[0]) && $dateArray[0]) {
                 $from_date = date('Y-m-d', strtotime($dateArray[0]));
             }
-            if (isset($dateArray[1])) {
+            if (isset($dateArray[1]) && $dateArray[1]) {
                 $to_date = date('Y-m-d', strtotime($dateArray[1]));
             } else {
                 $to_date = date('Y-m-d', strtotime($dateArray[0]));
@@ -46,8 +46,8 @@ class Retail_report extends BaseController
         $tax = $salesModel
                 ->where('DATE(date_time) >= ', $from_date)
                 ->where('DATE(date_time) <= ', $to_date)
-                ->selectSum('tax')
-                ->first()['tax'];
+                ->selectSum('tax_calc')
+                ->first()['tax_calc'];
 
         $salesCount = $salesModel
             ->where('DATE(date_time) >= ', $from_date)
@@ -126,7 +126,7 @@ class Retail_report extends BaseController
             ->selectCount('sales_details.id')
             ->first()['id'];
 
-        $totalSale = floatval($grandTotal) - (floatval($discount) + floatval($shipping) + floatval($tax));
+        $totalSale = floatval($grandTotal) + floatval($discount) - floatval($shipping) - floatval($tax) ;
         $data = [
                 'totalSale' => ($totalSale) ? floatval($totalSale) : 0,
                 'discount' => ($discount) ? floatval($discount) : 0,
@@ -148,6 +148,7 @@ class Retail_report extends BaseController
                 'zelle' => $zelle,
                 'cashApp' => $cashApp,
             ];
+        
         return view('retails/sales/summary', $data);
     }
 
@@ -158,18 +159,16 @@ class Retail_report extends BaseController
         if (isset($_GET['date'])) {
             $dates = $_GET['date'];
             $dateArray = explode(' to ', $dates);
-            if (isset($dateArray[0])) {
+            if (isset($dateArray[0]) && $dateArray[0]) {
                 $from_date = date('Y-m-d', strtotime($dateArray[0]));
             }
-            if (isset($dateArray[1])) {
+            if (isset($dateArray[1]) && $dateArray[1]) {
                 $to_date = date('Y-m-d', strtotime($dateArray[1]));
             }
         }
         $salesModel = model(SalesModel::class);
         $salesDetailsModel = model(SalesDetailsModel::class);
-
         $paymentModel = model(PaymentModel::class);
-
         $grandTotal = $salesModel
             ->where('DATE(date_time) >= ', $from_date)
             ->where('DATE(date_time) <= ', $to_date)
@@ -188,15 +187,14 @@ class Retail_report extends BaseController
         $tax = $salesModel
             ->where('DATE(date_time) >= ', $from_date)
             ->where('DATE(date_time) <= ', $to_date)
-            ->selectSum('tax')
-            ->first()['tax'];
+            ->selectSum('tax_calc')
+            ->first()['tax_calc'];
 
         $salesCount = $salesModel
             ->where('DATE(date_time) >= ', $from_date)
             ->where('DATE(date_time) <= ', $to_date)
             ->selectCount('id')
             ->first()['id'];
-
 
         $cashTotal = $paymentModel
             ->where('DATE(datetime) >= ', $from_date)
@@ -233,20 +231,21 @@ class Retail_report extends BaseController
             ->selectSum('amount')
             ->first()['amount'];
 
+
         $zelle = $paymentModel
             ->where('DATE(datetime) >= ', $from_date)
             ->where('DATE(datetime) <= ', $to_date)
             ->where('payment_method', 'Zelle')
             ->selectSum('amount')
             ->first()['amount'];
-        
+
         $cashApp = $paymentModel
             ->where('DATE(datetime) >= ', $from_date)
             ->where('DATE(datetime) <= ', $to_date)
             ->where('payment_method', 'Cash App')
             ->selectSum('amount')
             ->first()['amount'];
-        
+
         $depositeTotal = $paymentModel
             ->where('DATE(datetime) >= ', $from_date)
             ->where('DATE(datetime) <= ', $to_date)
@@ -267,7 +266,7 @@ class Retail_report extends BaseController
             ->selectCount('sales_details.id')
             ->first()['id'];
 
-        $totalSale = floatval($grandTotal) - (floatval($discount) + floatval($shipping) + floatval($tax));
+        $totalSale = floatval($grandTotal) + floatval($discount) - floatval($shipping) - floatval($tax);
         $data = [
             'totalSale' => ($totalSale) ? floatval($totalSale) : 0,
             'discount' => ($discount) ? floatval($discount) : 0,
@@ -283,21 +282,25 @@ class Retail_report extends BaseController
             'giftCardTotal' => $giftCardTotal,
             'creditCardTotal' => $creditCardTotal,
             'chequeTotal' => $chequeTotal,
+            'otherTotal' => $otherTotal,
             'depositeTotal' => $depositeTotal,
             'totalPayment' => $totalPayment,
             'zelle' => $zelle,
             'cashApp' => $cashApp,
-            'otherTotal' => $otherTotal,
         ];
         $systemSettingModel = model(SystemSettingModel::class);
-        $data['system_setting'] = $systemSettingModel->where('id', '1')->first();
+        $system_setting = $systemSettingModel->where('id', '1')->first();
+        $settingModel = model(RetailSettingModel::class);
+        $data['setting'] =  $settingModel->first();
+        $data['logo'] = base_url('public/uploads/'. $system_setting['logo']);
         $html = view('retails/sales/summary_pdf', $data);
         $options = new \Dompdf\Options();
         $options->set('isRemoteEnabled', true);
-        $options->setTempDir('temp'); // temp folder with write permission
+        $options->set('isHtml5ParserEnabled', true);
+        $options->setTempDir('temp');
+        
         $dompdf = new \Dompdf\Dompdf();
         $dompdf->setOptions($options);
-        // $html = "<h1>PDF Example</h1>";
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();

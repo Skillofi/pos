@@ -37,12 +37,10 @@ class Online_sales extends BaseController
         $systemSettingModel = model(SystemSettingModel::class);
         $setting =  $settingModel->first();
         $systemSetting = $systemSettingModel->where('id', '1')->first();
-        $img = file_get_contents(base_url('public/uploads/' . $systemSetting['logo']));
-        $logo = base64_encode($img);
         $data = [
             'sale' => $response,
             'setting' => $setting,
-            'logo' => $logo,
+            'logo' => base_url('public/uploads/'.$systemSetting['logo']),
         ];
         $html = view('online/sales/invoice', $data);
         $options = new \Dompdf\Options();
@@ -105,12 +103,10 @@ class Online_sales extends BaseController
             $systemSettingModel = model(SystemSettingModel::class);
             $setting =  $settingModel->first();
             $systemSetting = $systemSettingModel->where('id', '1')->first();
-            $img = file_get_contents(base_url('public/uploads/' . $systemSetting['logo']));
-            $logo = base64_encode($img);
             $data = [
                 'sale' => $response,
                 'setting' => $setting,
-                'logo' => $logo,
+                'logo' => base_url('public/uploads/'.$systemSetting['logo']),
             ];
             $html = view('online/sales/invoice', $data);
             $options = new \Dompdf\Options();

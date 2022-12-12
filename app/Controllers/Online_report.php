@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\TransactionModel;
 
 class Online_report extends BaseController
 {
@@ -148,11 +147,12 @@ class Online_report extends BaseController
         $data['fromDate'] = $fromDate;
         $data['endDate'] = $endDate;
         $systemSettingModel = model(SystemSettingModel::class);
+        $settingModel = model(OnlineSettingModel::class);
+        $data['setting'] =  $settingModel->where('id', '1')->first();
         $data['system_setting'] = $systemSettingModel->where('id', '1')->first();
-
+        $data['logo'] = base_url('public/uploads/'.$data['system_setting']['logo']);
         $html = view('online/report/summary_pdf', ['data' => $data]);
-        // return $html;
-        // exit;
+        
         $options = new \Dompdf\Options();
         $options->set('isRemoteEnabled', true);
         $options->setTempDir('temp'); // temp folder with write permission
@@ -174,7 +174,7 @@ class Online_report extends BaseController
         $fromDate = date('M d,Y');
         $endDate = date('M d,Y');
         $URLDate = (isset($_POST['date']) ? $_POST['date'] : date('Y-m-d'));
-        $email = $_POST['email'];
+        $emailAddress = $_POST['email'];
         
         if (isset($_POST['date'])) {
             $dates = $_POST['date'];
@@ -216,10 +216,11 @@ class Online_report extends BaseController
         $data['fromDate'] = $fromDate;
         $data['endDate'] = $endDate;
         $systemSettingModel = model(SystemSettingModel::class);
+        $settingModel = model(OnlineSettingModel::class);
+        $data['setting'] =  $settingModel->where('id', '1')->first();
         $data['system_setting'] = $systemSettingModel->where('id', '1')->first();
+        $data['logo'] = base_url('public/uploads/'.$data['system_setting']['logo']);
         $html = view('online/report/summary_pdf', ['data' => $data]);
-        // return $html;
-        // exit;
         $options = new \Dompdf\Options();
         $options->set('isRemoteEnabled', true);
         $options->setTempDir('temp'); // temp folder with write permission
@@ -244,7 +245,7 @@ class Online_report extends BaseController
         $email->setNewline("\r\n");
         $email->setCRLF("\r\n");
         $email->setFrom('billing@georgiaphonecase.com', 'Georgia Phone Case');
-        $email->setTo($email);
+        $email->setTo($emailAddress);
         // $email->setTo('salahoddin88@gmail.com');
         $email->setSubject($subject);
         $email->setMessage($message);
