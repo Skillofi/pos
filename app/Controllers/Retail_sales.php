@@ -19,7 +19,6 @@ class Retail_sales extends BaseController
         $salesDetailsModel = model(SalesDetailsModel::class);
         $settingModel = model(RetailSettingModel::class);
         $systemSettingModel = model(SystemSettingModel::class);
-        // echo "<pre>";
         $setting =  $settingModel->first();
         $sale =  $salesModel
                     ->select('sales.id salesId, sales.*, customer.id customer_id, customer.*')
@@ -31,17 +30,14 @@ class Retail_sales extends BaseController
                             ->join('product', 'product.id=sales_details.product_id', 'inner')
                             ->where('sales_id', $salesId)->findAll();
         $systemSetting = $systemSettingModel->where('id', '1')->first();
-        $img = file_get_contents(base_url('public/uploads/' . $systemSetting['logo']));
-        $logo = base64_encode($img);
 
         $data = [
             'sale' => $sale,
             'salesDetails' => $salesDetails,
             'setting' => $setting,
-            'logo' => $logo,
+            'systemSetting' => $systemSetting,
         ];
         $html = view('retails/sales/invoice', $data);
-
         $options = new \Dompdf\Options();
         $options->set('isRemoteEnabled', true);
         $options->setTempDir('temp');
@@ -68,7 +64,7 @@ class Retail_sales extends BaseController
                 $email->setFrom('billing@georgiaphonecase.com', 'Georgia Phone Case');
                 // $email->setTo('salahoddin88@gmail.com');
                 $email->setTo($sale['email']);
-                $subject = "Invoice";
+                $subject = "Invoice ".$sale['reference_no'];
                 $message = "Thank you for shopping with us, please find invoice attachment";
                 $email->setSubject($subject);
                 $email->setMessage($message);
@@ -142,7 +138,7 @@ class Retail_sales extends BaseController
             }
             $grandTotal = floatval($grandTotal) - floatval($discount);
             $taxTotal = (floatval($grandTotal) * floatval($tax)) / 100;
-            $grandTotal = ($grandTotal + floatval($taxTotal));
+            $grandTotal = (floatval($grandTotal) + floatval($taxTotal) + floatval($shipping));
             $response = $salesModel->update($salesId, ['grand_total' => $grandTotal, 'tax_calc' => $taxTotal]);
             $sendEmail = False;
             if($send_email == 1){
@@ -231,7 +227,7 @@ class Retail_sales extends BaseController
             }
             $grandTotal = floatval($grandTotal) - floatval($discount);
             $taxTotal = (floatval($grandTotal) * floatval($tax)) / 100;
-            $grandTotal = ($grandTotal + floatval($taxTotal));
+            $grandTotal = (floatval($grandTotal) + floatval($taxTotal) + floatval($shipping));
             $response = $salesModel->update($salesId, ['grand_total' => $grandTotal, 'tax_calc'=> $taxTotal]);
             $sendEmail = False;
             if ($send_email == 1) {

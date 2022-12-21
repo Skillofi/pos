@@ -68,7 +68,7 @@ class Online_sales extends BaseController
             $email->setFrom('billing@georgiaphonecase.com', 'Georgia Phone Case');
             // $email->setTo('salahoddin88@gmail.com');
             $email->setTo($response['email']);
-            $subject = "Invoice";
+            $subject = "Invoice #".$id;
             $message = "Thank you for shopping with us, please find invoice attachment";
             $email->setSubject($subject);
             $email->setMessage($message);

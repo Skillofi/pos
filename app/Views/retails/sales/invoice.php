@@ -30,16 +30,24 @@
         }
     </style>
 
+    <table style="width:100%">
+        <tr style="border-bottom:10x solid black">
+            <td width="30%">
+                <img style="width:90%" src="<?=base_url('public/uploads/'. $systemSetting['logo'])  ?>">
+            </td>
+            <td width="70%">
+                <strong style="font-size:22px">Georgia Phone Case</strong><br>
+                <span>Email: <?= $setting['email'] ?></span><br>
+                <span><?= $setting['address'] ?></span><br>
+                <span>Tel: <?= $setting['phone'] ?></span><br>
+                <span>Fax: <?= $setting['fax'] ?></span>
 
+            </td>
+        </tr>
+    </table>
 
 
     <table style="width:100%">
-        <tr>
-            <td></td>
-            <td>
-                <!-- <img src="data:image/png;base64,<?= $logo ?>"> -->
-            </td>
-        </tr>
         <tr>
             <td>
                 <h4>Order no: #RF-<?= $sale['reference_no'] ?></h4>
@@ -103,7 +111,7 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>Total <?=$grandTotal?></td>
+            <td>Total</td>
             <td> <?= $formatter->formatCurrency(floatval($grandTotal), 'USD') ?></td>
         </tr>
         <?php $grandTotal -= floatval($sale['discount']); ?>
@@ -111,16 +119,16 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>Tax(<?= $sale['tax'] ?>%)</td>
-            <?php $taxCalc = (floatval($grandTotal) * floatval($sale['tax']) ) / 100 ?>
-            <td> <?= $formatter->formatCurrency($taxCalc, 'USD') ?></td>
+            <td>Discount</td>
+            <td> <?= $formatter->formatCurrency(floatval($sale['discount']), 'USD') ?></td>
         </tr>
         <tr>
             <td></td>
             <td></td>
             <td></td>
-            <td>Discount</td>
-            <td> <?= $formatter->formatCurrency(floatval($sale['discount']), 'USD') ?></td>
+            <td>Tax(<?= $sale['tax'] ?>%)</td>
+            <?php $taxCalc = (floatval($grandTotal) * floatval($sale['tax'])) / 100 ?>
+            <td> <?= $formatter->formatCurrency($taxCalc, 'USD') ?></td>
         </tr>
 
         <tr>
@@ -176,7 +184,7 @@
             </td>
             <td style="text-align:center">
                 <h4>Seller Name</h4>
-                <h4><?= ucwords($sale['name']) ?></h4>
+                <h4>Georgia Phone Case</h4>
             </td>
         </tr>
 
