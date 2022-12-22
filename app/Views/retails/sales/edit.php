@@ -85,6 +85,7 @@
                                 <th width="150">Price</th>
                                 <th width="90">Quantity</th>
                                 <th>Amount</th>
+                                <th>Tax</th>
                                 <th>Action</th>
                             </thead>
                             <tbody id="">
@@ -101,6 +102,12 @@
                                             <input type="number" class="form-control productQuantity productQuantity-<?= $salesDetail['id'] ?>" data-id="<?= $salesDetail['id'] ?>" value="<?= $salesDetail['qty'] ?>">
                                         </td>
                                         <td class="totalProduct totalProduct-<?= $salesDetail['id'] ?>"><?= $salesDetail['price'] ?></td>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input applyTax applyTax-<?= $salesDetail['id'] ?>" type="checkbox" value="" id="applyTax-<?= $salesDetail['id'] ?>" <?= ($salesDetail['tax']) ? 'checked="checked"' : "" ?>>
+                                                <label class="form-check-label" for="applyTax-<?= $salesDetail['id'] ?>"></label>
+                                            </div>
+                                        </td>
                                         <td>
                                             <a href="javascript:;" class="btn btn-icon btn-danger btn-sm removeProduct" data-id="<?= $salesDetail['id'] ?>">
                                                 <i class="fas fa-minus "></i>
@@ -119,6 +126,7 @@
                                 <select class="form-control tax" name="tax" id="tax">
                                     <option <?= ($sales['tax'] == "6") ? "selected" : "" ?> value="6">VAT@6%</option>
                                     <option <?= ($sales['tax'] == "7") ? "selected" : "" ?> value="7">VAT@7%</option>
+                                    <option <?= ($sales['tax'] == "0") ? "selected" : "" ?> value="0">No Tax</option>
                                 </select>
                             </div>
                         </div>
@@ -247,7 +255,6 @@
         return (parseFloat(val)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     }
 
-
     const productSearchBox = {
         init: () => {},
 
@@ -285,19 +292,19 @@
                                     if (val.id != undefined) {
                                         $(`#productResultInnerHTML`).append(
                                             `<div class="product d-flex align-items-center p-3 rounded-3 border-hover border border-dashed border-gray-300 cursor-pointer mb-1 products" data-kt-search-element="product" data-id="${val.id}" onclick="productSearchBox.process(${val.id}, '${val.name}', '${val.price}')">
-                                    <div class="fw-semibold">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <span class="fs-6 text-gray-800 me-2">${val.name} - <small>${val.code}</small></span><br>
-                                                <span class="badge badge-light">Stock : ${val.stock}</span>
-                                                <span class="badge badge-light">price : $${val.price}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>`
-                                        )
+                                                <div class="fw-semibold">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <span class="fs-6 text-gray-800 me-2">${val.name} - <small>${val.code}</small></span><br>
+                                                            <span class="badge badge-light">Stock : ${val.stock}</span>
+                                                            <span class="badge badge-light">price : $${val.price}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>`
+                                        );
                                     }
-                                })
+                                });
                                 $(`#productResultDiv`).show();
                             } else {
                                 $(`#productResultDiv`).hide();
@@ -326,32 +333,46 @@
             let totalPrice = 0;
             let totalQuantity = 0;
             let totalTax = 0;
+            let tax = $("#tax").val();
+            $(".applyTax").each(function() {
+                if (tax == 0) {
+                    $(this).attr('disabled', true);
+                    $(this).prop("checked", false);
+                } else {
+                    $(this).attr('disabled', false);
+                    // $(this).prop("checked", true);
+                }
+            })
             $(".salesDetailsId").each(function(i, val) {
+                let productTax = 0;
                 let productId = $(val).attr('data-id');
                 let productPrice = $(`.productPrice-${productId}`).val();
                 let productQuantity = $(`.productQuantity-${productId}`).val();
-                let productTotal = parseFloat(productPrice) * parseFloat(productQuantity)
+                let productTotal = parseFloat(productPrice) * parseFloat(productQuantity);
                 $(`.totalProduct-${productId}`).html(productTotal);
                 $(`.productAmount-${productId}`).val(productTotal);
-                totalQuantity += parseFloat(productQuantity)
+                totalQuantity += parseFloat(productQuantity);
                 totalPrice = parseFloat(totalPrice) + parseFloat(productTotal);
+                if ($(`.applyTax-${productId}`).is(":checked")) {
+                    productTax = ((parseFloat(productTotal) * parseFloat(tax)) / parseFloat(100));
+                }
+                totalTax += productTax
             })
             let shipping = 0;
             if ($("#shipping").val() != 0) {
-                shipping = $("#shipping").val()
+                shipping = $("#shipping").val();
             }
             let discount = 0;
             if ($("#discount").val() != 0) {
-                discount = $("#discount").val()
+                discount = $("#discount").val();
             }
-            let tax = $("#tax").val();
             totalPrice = parseFloat(totalPrice) - parseFloat(discount);
-            totalTax = ((parseFloat(totalPrice) * parseFloat(tax)) / parseFloat(100))
+            // totalTax = ((parseFloat(totalPrice) * parseFloat(tax)) / parseFloat(100))
             $(".totalCount").html(totalQuantity);
             $(".totalAmount").html(formateAmount(totalPrice));
             $(".totalTax").html(formateAmount(totalTax));
             $(".shippingAmount").html(formateAmount(shipping));
-            let grandTotal = (parseFloat(totalPrice)) + parseFloat(totalTax) + parseFloat(shipping)
+            let grandTotal = (parseFloat(totalPrice)) + parseFloat(totalTax) + parseFloat(shipping);
             $(".grandTotal").html(formateAmount(grandTotal));
         },
         productCalc: (productId) => {
@@ -361,10 +382,10 @@
         removeProduct: (productId) => {
             $(`.removeProductDiv`).append(
                 `<input type="hidden" value="${productId}" class="removedProduct">`
-            )
+            );
             $(`#tr-${productId}`).remove();
             $(".productIndex").each(function(i, val) {
-                $(val).html(i + 1)
+                $(val).html(i + 1);
             })
             POSProcess.productsCalc();
         }
@@ -378,37 +399,8 @@
                 enableTime: true,
                 altFormat: "m/d/Y H:i",
                 dateFormat: "Y-m-d H:i",
-                onChange: function(selectedDates, dateStr, instance) {
-                    // handleFlatpickr(selectedDates, dateStr, instance);
-                    Init.datePickerHandler(selectedDates, dateStr, instance)
-                },
+                onChange: function(selectedDates, dateStr, instance) {},
             });
-        },
-
-        datePickerHandler: (selectedDates, dateStr, instance) => {
-            minDate = selectedDates[0] ? new Date(selectedDates[0]) : null;
-            maxDate = selectedDates[1] ? new Date(selectedDates[1]) : null;
-
-            // Datatable date filter --- more info: https://datatables.net/extensions/datetime/examples/integration/datatables.html
-            // Custom filtering function which will search data in column four between two values
-            $.fn.dataTable.ext.search.push(
-                function(settings, data, dataIndex) {
-                    var min = minDate;
-                    var max = maxDate;
-                    var dateAdded = new Date(moment($(data[5]).text(), 'DD/MM/YYYY'));
-                    var dateModified = new Date(moment($(data[6]).text(), 'DD/MM/YYYY'));
-
-                    if (
-                        (min === null && max === null) ||
-                        (min === null && max >= dateModified) ||
-                        (min <= dateAdded && max === null) ||
-                        (min <= dateAdded && max >= dateModified)
-                    ) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
         },
         formateAmount: (val) => {
             if (val) {
@@ -421,45 +413,49 @@
 
     $(document).ready(() => {
         POSProcess.productsCalc();
-        Init.datePicker()
+        Init.datePicker();
     })
 
     $(document).on("change", "#tax", function() {
         POSProcess.productsCalc();
-    })
+    });
+
+    $(document).on("change", ".applyTax ", function() {
+        POSProcess.productsCalc();
+    });
 
     $(document).on("change", "#discount", function() {
         let discount = $("#discount").val()
         $(".totalDiscount").html('$' + (parseFloat(discount)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'))
         POSProcess.productsCalc();
-    })
+    });
 
     $(document).on("change", "#shipping", function() {
         POSProcess.productsCalc();
-    })
+    });
 
     $(document).on("change", ".productPrice", function() {
         POSProcess.productsCalc();
-    })
+    });
 
     $(document).on("click", ".addShipping", function() {
-        let shippingTitle = $("#shipping_method").val()
-        let shipping = $("#shipping_amount").val()
-        $("#shippingTitle").val(shippingTitle)
-        $("#shipping").val(shipping)
-        $("#shippingTitleSpan").html(shippingTitle)
+        let shippingTitle = $("#shipping_method").val();
+        let shipping = $("#shipping_amount").val();
+        $("#shippingTitle").val(shippingTitle);
+        $("#shipping").val(shipping);
+        $("#shippingTitleSpan").html(shippingTitle);
         POSProcess.productsCalc();
         $(".shippingTR").show();
-    })
+    });
 
     $(document).on("click", ".removeProduct", function() {
-        let productId = $(this).attr('data-id')
-        POSProcess.removeProduct(productId)
-    })
+        let productId = $(this).attr('data-id');
+        POSProcess.removeProduct(productId);
+    });
 
     $(document).on("change", ".productQuantity", () => {
-        POSProcess.productsCalc()
-    })
+        POSProcess.productsCalc();
+    });
 
     const Product = {
 
@@ -546,15 +542,20 @@
         let productData = [];
         $(".salesDetailsId").each(function(i, v) {
             let productId = $(this).attr('data-id')
+            let productTax = 0;
+            if ($(`.applyTax-${productId}`).is(":checked")) {
+                productTax = 1;
+            }
             productData.push({
                 'salesDetailsId': $(this).val(),
                 'price': $(`.productPrice-${productId}`).val(),
                 'qty': $(`.productQuantity-${productId}`).val(),
                 'amount': $(`.productAmount-${productId}`).val(),
+                'productTax': productTax,
             })
         })
         let removedProduct = [];
-        if($(".removedProduct").length > 0){
+        if ($(".removedProduct").length > 0) {
             $(".removedProduct").each(function(i, v) {
                 removedProduct.push($(v).val())
             })

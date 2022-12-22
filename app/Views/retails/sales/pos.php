@@ -89,6 +89,7 @@
                                 <th width="150">Price</th>
                                 <th width="90">Quantity</th>
                                 <th>Amount</th>
+                                <th>Tax</th>
                                 <th>Action</th>
                             </thead>
                             <tbody id="productBody">
@@ -103,6 +104,7 @@
                                 <select class="form-control tax" name="tax" id="tax">
                                     <option value="6">VAT@6%</option>
                                     <option value="7">VAT@7%</option>
+                                    <option value="0">No Tax</option>
                                 </select>
                             </div>
                         </div>
@@ -232,7 +234,7 @@
                         <div class="col-md-6">
                             <div class="col-md-12">
                                 <div class="form-check form-check-custom form-check-solid">
-                                    <input class="form-check-input tax" type="checkbox" value="1" id="emailInvoice">
+                                    <input class="form-check-input" type="checkbox" value="1" id="emailInvoice">
                                     <label class="form-check-label ps-2" for="emailInvoice">Email invoice to customer</label>
                                 </div>
                             </div>
@@ -473,6 +475,12 @@
                         
                     </td>
                     <td>
+                        <div class="form-check">
+                            <input class="form-check-input applyTax applyTax-${productId}" type="checkbox" value="" id="applyTax-${productId}" checked="checked">
+                            <label class="form-check-label" for="applyTax-${productId}"></label>
+                        </div>
+                    </td>
+                    <td>
                         <a href="javascript:;" class="btn btn-icon btn-danger btn-sm removeProduct" data-id="${productId}">
                             <i class="fas fa-minus "></i>
                         </a>
@@ -493,33 +501,47 @@
             let totalPrice = 0;
             let totalQuantity = 0;
             let totalTax = 0;
+            let tax = $("#tax").val();
+            $(".applyTax").each(function() {
+                    if (tax == 0) {
+                    $(this).prop("checked", false);
+                    $(this).attr('disabled', true);
+                } else {
+                    $(this).attr('disabled', false);
+                    $(this).prop("checked", true);
+                }
+            })
             $(".productId").each(function(i, val) {
+                let productTax = 0;
                 let productId = $(val).attr('data-id');
                 let productPrice = $(`.productPrice-${productId}`).val();
                 let productQuantity = $(`.productQuantity-${productId}`).val();
-                let productTotal = parseFloat(productPrice) * parseFloat(productQuantity)
+                let productTotal = parseFloat(productPrice) * parseFloat(productQuantity);
                 $(`.totalProduct-${productId}`).html(productTotal);
                 $(`.productAmount-${productId}`).val(productTotal);
-                totalQuantity += parseFloat(productQuantity)
+                totalQuantity += parseFloat(productQuantity);
                 totalPrice = parseFloat(totalPrice) + parseFloat(productTotal);
+                if ($(`.applyTax-${productId}`).is(":checked")) {
+                    productTax = ((parseFloat(productTotal) * parseFloat(tax)) / parseFloat(100));
+                }
+                totalTax += productTax
             })
             let shipping = 0;
             if ($("#shipping").val() != 0) {
-                shipping = $("#shipping").val()
+                shipping = $("#shipping").val();
             }
             let discount = 0;
             if ($("#discount").val() != 0) {
-                discount = $("#discount").val()
+                discount = $("#discount").val();
             }
-            let tax = $("#tax").val();
             totalPrice = parseFloat(totalPrice) - parseFloat(discount);
-            totalTax = ((parseFloat(totalPrice) * parseFloat(tax)) / parseFloat(100))
+            // totalTax = ((parseFloat(totalPrice) * parseFloat(tax)) / parseFloat(100));
             $(".totalCount").html(totalQuantity);
             $(".totalDiscount").html(formateAmount(discount));
             $(".totalAmount").html(formateAmount(totalPrice));
             $(".totalTax").html(formateAmount(totalTax));
             $(".shippingAmount").html(formateAmount(shipping));
-            let grandTotal = (parseFloat(totalPrice)) + parseFloat(totalTax) + parseFloat(shipping)
+            let grandTotal = (parseFloat(totalPrice)) + parseFloat(totalTax) + parseFloat(shipping);
             $(".grandTotal").html(formateAmount(grandTotal));
         },
         productCalc: (productId) => {
@@ -529,7 +551,7 @@
         removeProduct: (productId) => {
             $(`#tr-${productId}`).remove();
             $(".productIndex").each(function(i, val) {
-                $(val).html(i + 1)
+                $(val).html(i + 1);
             })
             POSProcess.productsCalc();
         }
@@ -543,37 +565,8 @@
                 enableTime: true,
                 altFormat: "m/d/Y H:i",
                 dateFormat: "Y-m-d H:i",
-                onChange: function(selectedDates, dateStr, instance) {
-                    // handleFlatpickr(selectedDates, dateStr, instance);
-                    Init.datePickerHandler(selectedDates, dateStr, instance)
-                },
+                onChange: function(selectedDates, dateStr, instance) {},
             });
-        },
-
-        datePickerHandler: (selectedDates, dateStr, instance) => {
-            minDate = selectedDates[0] ? new Date(selectedDates[0]) : null;
-            maxDate = selectedDates[1] ? new Date(selectedDates[1]) : null;
-
-            // Datatable date filter --- more info: https://datatables.net/extensions/datetime/examples/integration/datatables.html
-            // Custom filtering function which will search data in column four between two values
-            $.fn.dataTable.ext.search.push(
-                function(settings, data, dataIndex) {
-                    var min = minDate;
-                    var max = maxDate;
-                    var dateAdded = new Date(moment($(data[5]).text(), 'DD/MM/YYYY'));
-                    var dateModified = new Date(moment($(data[6]).text(), 'DD/MM/YYYY'));
-
-                    if (
-                        (min === null && max === null) ||
-                        (min === null && max >= dateModified) ||
-                        (min <= dateAdded && max === null) ||
-                        (min <= dateAdded && max >= dateModified)
-                    ) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
         },
         formateAmount: (val) => {
             if (val) {
@@ -585,14 +578,18 @@
     }
 
     $(document).ready(() => {
-        customerSearchBox.init()
-        productSearchBox.init()
+        customerSearchBox.init();
+        productSearchBox.init();
         POSProcess.productsCalc();
         Init.datePicker()
         $("#payment_div").hide();
     })
 
     $(document).on("change", "#tax", function() {
+        POSProcess.productsCalc();
+    })
+
+    $(document).on("change", ".applyTax ", function() {
         POSProcess.productsCalc();
     })
 
@@ -609,22 +606,22 @@
     })
 
     $(document).on("click", ".addShipping", function() {
-        let shippingTitle = $("#shipping_method").val()
-        let shipping = $("#shipping_amount").val()
-        $("#shippingTitle").val(shippingTitle)
-        $("#shipping").val(shipping)
-        $("#shippingTitleSpan").html(shippingTitle)
+        let shippingTitle = $("#shipping_method").val();
+        let shipping = $("#shipping_amount").val();
+        $("#shippingTitle").val(shippingTitle);
+        $("#shipping").val(shipping);
+        $("#shippingTitleSpan").html(shippingTitle);
         POSProcess.productsCalc();
         $(".shippingTR").show();
     })
 
     $(document).on("click", ".removeProduct", function() {
-        let productId = $(this).attr('data-id')
-        POSProcess.removeProduct(productId)
+        let productId = $(this).attr('data-id');
+        POSProcess.removeProduct(productId);
     })
 
     $(document).on("change", ".productQuantity", () => {
-        POSProcess.productsCalc()
+        POSProcess.productsCalc();
     })
 
     $(document).on("change", ".payment_status", () => {
@@ -654,6 +651,12 @@
                 <td class="totalProduct totalProduct-${newProduct}">${productPrice}
                 </td>
                 <td>
+                    <div class="form-check">
+                        <input class="form-check-input applyTax applyTax-${newProduct}" type="checkbox" value="" id="applyTax-${newProduct}" checked="checked">
+                        <label class="form-check-label" for="applyTax-${newProduct}"></label>
+                    </div>
+                </td>
+                <td>
                     <a href="javascript:;" class="btn btn-icon btn-danger btn-sm removeProduct" data-id="${newProduct}">
                         <i class="fas fa-minus "></i>
                     </a>
@@ -662,7 +665,7 @@
             `;
         $("#productBody").append(tr);
         newProduct += 1;
-        POSProcess.productsCalc()
+        POSProcess.productsCalc();
     }
 
     const Product = {
@@ -673,8 +676,8 @@
                 dataType: "HTML",
                 data: {},
                 success: (result) => {
-                    toastr.clear()
-                    $("#modal-content").html(result)
+                    toastr.clear();
+                    $("#modal-content").html(result);
                 },
                 beforeSend: () => {
                     toastr.info("Information", "Please wait your request is under process");
@@ -682,8 +685,8 @@
             });
         },
         addProduct: (data) => {
-            var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
-            var csrfHash = $('.txt_csrfname').val(); // CSRF hash
+            var csrfName = $('.txt_csrfname').attr('name');
+            var csrfHash = $('.txt_csrfname').val();
             $.ajax({
                 url: `${siteURL}product/add_product`,
                 type: "POST",
@@ -725,8 +728,8 @@
                 dataType: "HTML",
                 data: {},
                 success: (result) => {
-                    toastr.clear()
-                    $("#modal-content").html(result)
+                    toastr.clear();
+                    $("#modal-content").html(result);
                 },
                 beforeSend: () => {
                     toastr.info("Information", "Please wait your request is under process");
@@ -742,8 +745,8 @@
                     id: id
                 },
                 success: (result) => {
-                    toastr.clear()
-                    $("#modal-content").html(result)
+                    toastr.clear();
+                    $("#modal-content").html(result);
                 },
                 beforeSend: () => {
                     toastr.info("Information", "Please wait your request is under process");
@@ -752,8 +755,8 @@
         },
 
         addCustomer: (data) => {
-            var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
-            var csrfHash = $('.txt_csrfname').val(); // CSRF hash
+            var csrfName = $('.txt_csrfname').attr('name');
+            var csrfHash = $('.txt_csrfname').val();
             $.ajax({
                 url: `${siteURL}customer/add_customer`,
                 type: "POST",
@@ -774,7 +777,7 @@
                     toastr.clear()
                     if (result.status == 200) {
                         toastr.success("Success", result.message);
-                        $("#customerSearchBox").val(`${data.name}`)
+                        $("#customerSearchBox").val(`${data.name}`);
                         $(`#customer`).val(result.customerId);
                         customerSearchBox.clear();
                         $("#modal").modal('hide');
@@ -788,15 +791,14 @@
                 },
                 onError: () => {
                     toastr.danger("Error", "Something went wrong");
-
                 }
             });
         },
 
         updateCustomer: (data) => {
             console.log(data)
-            var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
-            var csrfHash = $('.txt_csrfname').val(); // CSRF hash
+            var csrfName = $('.txt_csrfname').attr('name');
+            var csrfHash = $('.txt_csrfname').val();
             $.ajax({
                 url: `${siteURL}customer/update_customer`,
                 type: "POST",
@@ -838,11 +840,10 @@
 
     $(".checkout").on("click", function() {
         let data = {};
-        var csrfName = $('.pos_csrfname').attr('name'); // CSRF Token name
-        var csrfHash = $('.pos_csrfname').val(); // CSRF hash
+        var csrfName = $('.pos_csrfname').attr('name');
+        var csrfHash = $('.pos_csrfname').val();
         data['customer'] = $(".customer").val();
         data['date_time'] = $("#date_time").val();
-        // data['reference_no'] = $("#reference_no").val();
         data['warehouse'] = $("#warehouse").val();
         data['tax'] = $("#tax").val();
         data['discount'] = $("#discount").val();
@@ -858,12 +859,17 @@
         let errorFlag = 0;
         let productData = [];
         $(".productId").each(function(i, v) {
-            let productId = $(this).attr('data-id')
+            let productId = $(this).attr('data-id');
+            let productTax = 0;
+            if ($(`.applyTax-${productId}`).is(":checked")) {
+                productTax = 1;
+            }
             productData.push({
                 'productId': $(this).val(),
                 'price': $(`.productPrice-${productId}`).val(),
                 'qty': $(`.productQuantity-${productId}`).val(),
                 'amount': $(`.productAmount-${productId}`).val(),
+                'productTax': productTax,
             })
         })
         if (data['customer'] == "0") {

@@ -6,8 +6,6 @@
         * {
             border: none;
             box-sizing: content-box;
-            /* margin: 6px; */
-            /* padding: 9px; */
             text-decoration: none;
             vertical-align: top;
         }
@@ -18,12 +16,9 @@
             justify-content: center;
             text-align: center;
             margin-bottom: 70px;
-
         }
 
-        table,
-        th,
-        td {
+        table, th, td {
             border-collapse: collapse;
             padding: 10px;
             margin-left: 10px;
@@ -128,7 +123,7 @@
             <td></td>
             <td>Tax(<?= $sale['tax'] ?>%)</td>
             <?php $taxCalc = (floatval($grandTotal) * floatval($sale['tax'])) / 100 ?>
-            <td> <?= $formatter->formatCurrency($taxCalc, 'USD') ?></td>
+            <td> <?= $formatter->formatCurrency($sale['tax_calc'], 'USD') ?></td>
         </tr>
 
         <tr>

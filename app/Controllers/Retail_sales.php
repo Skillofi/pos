@@ -124,20 +124,27 @@ class Retail_sales extends BaseController
             $products = $data['products'];
             $salesDetailsModel = model(SalesDetailsModel::class);
             $grandTotal = 0;
+            $taxTotal = 0;
             foreach($products as $product){
-                $amount = floatval($product['price']) * floatval($product['qty']);
+                $productTax = 0;
+                $productTotal = floatval($product['price']) * floatval($product['qty']);
                 $salesDetailsData = [
                     'sales_id' => $salesId,
                     'product_id' => $product['productId'],
                     'price' => $product['price'],
                     'qty' => $product['qty'],
-                    'amount' => floatval($product['price']) * floatval($product['qty']),
+                    'amount' => $productTotal,
+                    'tax' => $product['productTax'],
                 ];
                 $salesDetailsModel->insert($salesDetailsData);
-                $grandTotal = floatval($grandTotal)+ floatval($amount);
+                $grandTotal = floatval($grandTotal)+ floatval($productTotal);
+                if($product['productTax']){
+                    $productTax = (floatval($productTotal) * floatval($tax)) / 100;
+                }
+                $taxTotal += $productTax;
             }
             $grandTotal = floatval($grandTotal) - floatval($discount);
-            $taxTotal = (floatval($grandTotal) * floatval($tax)) / 100;
+            // $taxTotal = (floatval($grandTotal) * floatval($tax)) / 100;
             $grandTotal = (floatval($grandTotal) + floatval($taxTotal) + floatval($shipping));
             $response = $salesModel->update($salesId, ['grand_total' => $grandTotal, 'tax_calc' => $taxTotal]);
             $sendEmail = False;
@@ -208,16 +215,23 @@ class Retail_sales extends BaseController
             $products = $data['products'];
             $salesDetailsModel = model(SalesDetailsModel::class);
             $grandTotal = 0;
+            $taxTotal = 0;
             foreach($products as $product){
-                $amount = floatval($product['price']) * floatval($product['qty']);
+                $productTax = 0;
+                $productTotal = floatval($product['price']) * floatval($product['qty']);
                 $salesDetailsId = $product['salesDetailsId'];
                 $salesDetailsData = [
                     'price' => $product['price'],
                     'qty' => $product['qty'],
                     'amount' => floatval($product['price']) * floatval($product['qty']),
+                    'tax' => $product['productTax'],
                 ];
                 $salesDetailsModel->update($salesDetailsId, $salesDetailsData);
-                $grandTotal = floatval($grandTotal)+ floatval($amount);
+                $grandTotal = floatval($grandTotal)+ floatval($productTotal);
+                if ($product['productTax']) {
+                    $productTax = (floatval($productTotal) * floatval($tax)) / 100;
+                }
+                $taxTotal += $productTax;
             }
             $removedProducts = (isset($data['removedProduct'])) ? $data['removedProduct'] : [];
             if($removedProducts){
@@ -226,7 +240,7 @@ class Retail_sales extends BaseController
                 }
             }
             $grandTotal = floatval($grandTotal) - floatval($discount);
-            $taxTotal = (floatval($grandTotal) * floatval($tax)) / 100;
+            // $taxTotal = (floatval($grandTotal) * floatval($tax)) / 100;
             $grandTotal = (floatval($grandTotal) + floatval($taxTotal) + floatval($shipping));
             $response = $salesModel->update($salesId, ['grand_total' => $grandTotal, 'tax_calc'=> $taxTotal]);
             $sendEmail = False;
@@ -252,7 +266,6 @@ class Retail_sales extends BaseController
     {
         $salesModel = model(SalesModel::class);
         $salesDetailsModel = model(SalesDetailsModel::class);
-
         if ($this->request->getMethod() === 'get' && isset($_GET['id'])) {
             $id = $_GET['id'];
             $salesResponse = $salesModel->where('id', $id)->delete();
