@@ -94,6 +94,5 @@
     </script>
     <script src="<?= base_url('public/admin/plugins/global/plugins.bundle.js') ?>"></script>
     <script src="<?= base_url('public/admin/js/scripts.bundle.js') ?>"></script>
-    <script src="<?= base_url('public/admin/js/custom/authentication/sign-in/general.js') ?>"></script>
 </body>
 </html>
