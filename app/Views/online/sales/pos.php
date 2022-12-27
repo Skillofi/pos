@@ -772,6 +772,10 @@
         POSProcess.productsCalc();
         $(".discountTR").show();
     })
+    
+    $(document).on("change", ".productPrice", function(){
+        POSProcess.productsCalc();
+    })
 
     $(document).on("click", ".addShipping", function() {
         let shippingTitle = $("#shipping_method").val()

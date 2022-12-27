@@ -104,15 +104,15 @@
                         },
                     },
                     {
-                        data: "code",
-                        mRender: (data, type, full) => {
-                            return `${full.code}`;
-                        },
-                    },
-                    {
                         data: "name",
                         mRender: (data, type, full) => {
                             return `${full.name}`;
+                        },
+                    },
+                    {
+                        data: "code",
+                        mRender: (data, type, full) => {
+                            return `${full.code}`;
                         },
                     },
                     {
@@ -141,7 +141,7 @@
                         },
                     },
                 ],
-                dom: "Blrtip",
+                dom: "Bfrtilp",
                 "searching": true,
             });
         },

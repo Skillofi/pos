@@ -99,22 +99,26 @@ class Product extends BaseController
         $searchValue = $dtpostData['search']['value']; // Search value
         
         ## Total number of records without filtering
-        $users = new ProductModel();
-        $totalRecords = $users->select('id')
+        $productModal = new ProductModel();
+        $totalRecords = $productModal->select('id')
         ->countAllResults();
         
-        ## Total number of records with filtering
-        $totalRecordwithFilter = $users->select('id')
-        ->orLike('name', $searchValue)
-        ->orLike('price', $searchValue)
-        ->orLike('stock', $searchValue)
+        $productModal->select('id');
+        $termsArray = explode(" ", $searchValue);
+        foreach($termsArray as $value){
+            $productModal->Like('name', $value);    
+        }
+        $totalRecordwithFilter = $productModal
         ->countAllResults();
         
         ## Fetch records
-        $records = $users->select('*')
-        ->orLike('name', $searchValue)
-        ->orLike('price', $searchValue)
-        ->orLike('stock', $searchValue)
+        
+        $productModal->select('*');
+        $termsArray = explode(" ", $searchValue);
+        foreach($termsArray as $value){
+            $productModal->Like('name', $value);    
+        }
+        $records= $productModal
         ->orderBy($columnName, $columnSortOrder)
         ->findAll($rowperpage, $start);
         
@@ -136,9 +140,13 @@ class Product extends BaseController
         $dtpostData = $postData;
         $terms = $dtpostData['term'];
         $productModal = new ProductModel();
-        $records = $productModal->select('*')
-        ->orLike('name', $terms)
-        ->orLike('code', $terms)
+        $productModal->select('*');
+        
+        $termsArray = explode(" ", $terms);
+        foreach($termsArray as $value){
+            $productModal->Like('name', $value);    
+        }
+        $records = $productModal
         ->orderBy('name', 'ASC')
         ->findAll();
         return $this->response->setJSON($records);

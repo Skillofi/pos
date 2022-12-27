@@ -201,7 +201,7 @@ if(isset($_REQUEST['id'])){
 		'gtotal' => number_format($grandTotal,2),
 		'paymentmethod'=> $paymentmethod,
 	);
-	echo(json_encode($invoice));
+	echo json_encode($invoice);
 } else {
 	echo 'No id set';
 }
