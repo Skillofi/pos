@@ -168,7 +168,7 @@
                                 <a href="javascript:void(0)" class="btn btn-bg-secondary shippingA" data-bs-toggle="modal" data-bs-target="#shippingModal"><i class="fa fa-truck"></i> Shipping</a>
                                 <!--<a href="javascript:void(0)" class="btn btn-bg-secondary shippingA" data-bs-toggle="modal" data-bs-target="#discountModal"><i class="fa fa-money-bill"></i> Discount</a>-->
                                 <a href="javascript:void(0)" class="btn btn-bg-secondary checkoutModel"><i class="fa fa-shopping-cart"></i> Checkout</a>
-                                <a href="javascript:void(0)" class="btn btn-bg-secondary"><i class="fa fa-refresh"></i> Reset</a>
+                                <a href="javascript:void(0)" class="btn btn-bg-secondary" onClick="window.location.href=window.location.href"><i class="fa fa-refresh"></i> Reset</a>
                             </div>
                         </div>
                     </div>
@@ -701,7 +701,7 @@
                 let productPrice = $(`.productPrice-${productId}`).val();
                 let productQuantity = $(`.productQuantity-${productId}`).val();
                 let productTotal = parseFloat(productPrice) * parseFloat(productQuantity)
-                $(`.totalProduct-${productId}`).html(productTotal);
+                $(`.totalProduct-${productId}`).html(formateAmount(productTotal));
                 $(`.productAmount-${productId}`).val(productTotal);
                 let tax = 0;
                 if ($(`#tax-${productId}`).is(":checked")) {
@@ -771,6 +771,10 @@
         $("#discountTitleSpan").html(discount_name)
         POSProcess.productsCalc();
         $(".discountTR").show();
+    })
+    
+    $(document).on("change", ".productPrice", function(){
+        POSProcess.productsCalc();
     })
 
     $(document).on("click", ".addShipping", function() {

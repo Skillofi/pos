@@ -350,11 +350,10 @@
                                                     <td colspan="3" class="text-end">Discount</td>
                                                     <td class="text-end"><?= $formatter->formatCurrency($sales['discount'], 'USD') ?></td>
                                                 </tr>
-                                                <?php $grandTotal = $grandTotal - $sales['discount']; ?>
-                                                <?php $taxCalc = (floatval($grandTotal) * floatval($sales['tax'])) / 100 ?>
+                                                
                                                 <tr>
                                                     <td colspan="3" class="text-end">VAT (<?= $sales['tax'] ?>%)</td>
-                                                    <td class="text-end"> <?= $formatter->formatCurrency($taxCalc, 'USD') ?></td>
+                                                    <td class="text-end"> <?= $formatter->formatCurrency($sales['tax_calc'], 'USD') ?></td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="3" class="text-end">Shipping</td>

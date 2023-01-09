@@ -34,6 +34,9 @@ if(isset($_REQUEST['add_product']))
 			VALUES ('".$pid."','_stock','".$_REQUEST['qty']."')";
 			$conn->query($sqls5);		
 		}
+		$sqls5 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`)
+			VALUES ('".$pid."','_visibility','hidden')";
+		$conn->query($sqls5);
 		echo $pid;
 	}
 }

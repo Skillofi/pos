@@ -240,7 +240,7 @@
                             </div>
                             <div class="float-end" style="margin-top:200px">
                                 <a href="javascript:void(0)" class="btn btn-bg-secondary checkout"><i class="fa fa-shopping-cart"></i> Checkout</a>
-                                <a href="javascript:void(0)" class="btn btn-bg-secondary"><i class="fa fa-refresh"></i> Reset</a>
+                                <a href="javascript:void(0)" class="btn btn-bg-secondary" onClick="window.location.href=window.location.href"><i class="fa fa-refresh"></i> Reset</a>
                             </div>
                         </div>
                     </div>
@@ -503,12 +503,12 @@
             let totalTax = 0;
             let tax = $("#tax").val();
             $(".applyTax").each(function() {
-                    if (tax == 0) {
+                if (tax == 0) {
                     $(this).prop("checked", false);
                     $(this).attr('disabled', true);
                 } else {
                     $(this).attr('disabled', false);
-                    $(this).prop("checked", true);
+                    // $(this).prop("checked", true);
                 }
             })
             $(".productId").each(function(i, val) {

@@ -1,0 +1,45 @@
+[12-Dec-2022 10:59:15 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 6
+[12-Dec-2022 10:59:15 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 7
+[12-Dec-2022 10:59:15 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 8
+[12-Dec-2022 10:59:35 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 6
+[12-Dec-2022 10:59:35 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 7
+[12-Dec-2022 10:59:35 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 8
+[12-Dec-2022 10:59:59 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 6
+[12-Dec-2022 10:59:59 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 7
+[12-Dec-2022 10:59:59 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 8
+[12-Dec-2022 11:00:50 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 6
+[12-Dec-2022 11:00:50 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 7
+[12-Dec-2022 11:00:50 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 8
+[12-Dec-2022 11:01:16 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 6
+[12-Dec-2022 11:01:16 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 7
+[12-Dec-2022 11:01:16 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 8
+[12-Dec-2022 11:01:52 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 6
+[12-Dec-2022 11:01:52 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 7
+[12-Dec-2022 11:01:52 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 8
+[12-Dec-2022 11:02:22 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 6
+[12-Dec-2022 11:02:22 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 7
+[12-Dec-2022 11:02:22 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 8
+[12-Dec-2022 11:02:38 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 6
+[12-Dec-2022 11:02:38 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 7
+[12-Dec-2022 11:02:38 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 8
+[12-Dec-2022 11:03:26 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 6
+[12-Dec-2022 11:03:26 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 7
+[12-Dec-2022 11:03:26 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 8
+[12-Dec-2022 11:03:50 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 6
+[12-Dec-2022 11:03:50 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 7
+[12-Dec-2022 11:03:50 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 8
+[12-Dec-2022 11:08:21 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 6
+[12-Dec-2022 11:08:21 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 7
+[12-Dec-2022 11:08:21 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/georblgb/public_html/pos_api/api/all_products.php:1) in /home/georblgb/public_html/pos_api/api/all_products.php on line 8
+[13-Dec-2022 06:21:19 US/Eastern] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in /home/georblgb/public_html/pos_api/api/possummary.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/georblgb/public_html/pos_api/api/possummary.php on line 47
+[13-Dec-2022 06:21:40 US/Eastern] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in /home/georblgb/public_html/pos_api/api/possummary.php:42
+Stack trace:
+#0 {main}
+  thrown in /home/georblgb/public_html/pos_api/api/possummary.php on line 42
+[13-Dec-2022 06:22:14 US/Eastern] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in /home/georblgb/public_html/pos_api/api/possummary.php:48
+Stack trace:
+#0 {main}
+  thrown in /home/georblgb/public_html/pos_api/api/possummary.php on line 48

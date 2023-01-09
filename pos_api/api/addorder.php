@@ -1,8 +1,9 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-
+date_default_timezone_set('US/Eastern');
 require '../db.php';
     $_POST = $_POST['obj'];
+
     if($_POST['tr_body_total']>0)
 	{
 	
@@ -49,24 +50,24 @@ require '../db.php';
 					
 					$sql = "INSERT INTO `wp_posts` (`post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, 
 					`ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, 
-					`post_type`, `post_mime_type`, `comment_count`) VALUES ('1', '".$date."', '".$date."', '', '".$_REQUEST['product_name'.$ii]."', '', 
+					`post_type`, `post_mime_type`, `comment_count`) VALUES ('1', '".$date."', '".$date."', '', '".$_POST['product_name'.$ii]."', '', 
 					'publish', 'open', 'closed', '', '', '', '', '".$date."', '".$date."', '', '0', 
 					'https://www.georgiaphonecase.com/?post_type=product&#038;p=".$max."', '0', 'product', '', '0')";
 					$conn->query($sql);
 					$product_id = $conn->insert_id;
 					
-					if(!empty($_REQUEST['price'.$ii]))
+					if(!empty($_POST['price'.$ii]))
 					{		
 						$sqls4 = "INSERT INTO wp_postmeta
 						(`post_id`, `meta_key`, `meta_value`)
-						VALUES ('".$product_id."','_price','".$_REQUEST['price'.$ii]."')";
+						VALUES ('".$product_id."','_price','".$_POST['price'.$ii]."')";
 						$conn->query($sqls4);		
 					}
-					if(!empty($_REQUEST['qty'.$ii]))
+					if(!empty($_POST['qty'.$ii]))
 					{		
 						$sqls5 = "INSERT INTO wp_postmeta
 						(`post_id`, `meta_key`, `meta_value`)
-						VALUES ('".$product_id."','_stock','".$_REQUEST['qty'.$ii]."')";
+						VALUES ('".$product_id."','_stock','".$_POST['qty'.$ii]."')";
 						$conn->query($sqls5);		
 					}
 				}
@@ -150,76 +151,72 @@ require '../db.php';
 
 		if($customerid==-1)
 		{
-			$sql_customer = "INSERT INTO wp_users
-		(`user_login`, `user_pass`, `user_nicename`, `user_email`, `user_url`, `user_registered`, `user_activation_key`, `user_status`, `display_name`)
-		VALUES ('".$_REQUEST['fname_cus']."','".md5($_REQUEST['fname_cus'])."','".$_REQUEST['fname_cus']."','".$_REQUEST['cus_email']."','','".date('Y-m-d')."','',0,'".$_REQUEST['fname_cus']."')";
-		$conn->query($sql_customer);
-		$customerid = $conn->insert_id;
+			$sql_customer = "INSERT INTO wp_users (`user_login`, `user_pass`, `user_nicename`, `user_email`, `user_url`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) VALUES ('".$_POST['fname_cus']."','".md5($_POST['fname_cus'])."','".$_POST['fname_cus']."','".$_POST['cus_email']."','','".date('Y-m-d')."','',0,'".$_POST['fname_cus']."')";
+		    $conn->query($sql_customer);
+		    $customerid = $conn->insert_id;
 		
-		$sqls4 = "INSERT INTO wp_usermeta
-		(`user_id`, `meta_key`, `meta_value`)
-		VALUES ('".$customerid."','first_name','".$_REQUEST['fname_cus']."')";
-		$conn->query($sqls4);
+		    $sqls4 = "INSERT INTO wp_usermeta (`user_id`, `meta_key`, `meta_value`) VALUES ('".$customerid."','first_name','".$_POST['fname_cus']."')";
+		    $conn->query($sqls4);
 		
-		if(!empty($_REQUEST['last_name'])  && $_POST['last_name']!='undefined' && $_POST['last_name']!='null')
-		{		
-			$sqls4 = "INSERT INTO wp_usermeta
-			(`user_id`, `meta_key`, `meta_value`)
-			VALUES ('".$customerid."','last_name','".$_REQUEST['lname_cus']."')";
-			$conn->query($sqls4);		
-		}
-		
-		if(!empty($_REQUEST['cus_phone']) && $_POST['cus_phone']!='undefined' && $_POST['cus_phone']!='null')
-		{		
-			$sqls4 = "INSERT INTO wp_usermeta
-			(`user_id`, `meta_key`, `meta_value`)
-			VALUES ('".$customerid."','billing_phone','".$_REQUEST['cus_phone']."')";
-			$conn->query($sqls4);		
-		}
-		//billing_address_1
-		if(!empty($_REQUEST['cus_address'])  && $_POST['cus_address']!='undefined' && $_POST['cus_address']!='null')
-		{		
-			$sqls4 = "INSERT INTO wp_usermeta
-			(`user_id`, `meta_key`, `meta_value`)
-			VALUES ('".$customerid."','billing_address_1','".$_REQUEST['cus_address']."')";
-			$conn->query($sqls4);		
-		}
-//new
-		if(!empty($_REQUEST['address2'])  && $_POST['address2']!='undefined' && $_POST['address2']!='null')
-		{		
-			$sqls4 = "INSERT INTO wp_usermeta
-			(`user_id`, `meta_key`, `meta_value`)
-			VALUES ('".$customerid."','billing_address_2','".$_REQUEST['address2']."')";
-			$conn->query($sqls4);		
-		}
-		if(!empty($_REQUEST['country'])  && $_POST['country']!='undefined' && $_POST['country']!='null')
-		{		
-			$sqls4 = "INSERT INTO wp_usermeta
-			(`user_id`, `meta_key`, `meta_value`)
-			VALUES ('".$customerid."','billing_country','".$_REQUEST['country']."')";
-			$conn->query($sqls4);		
-		}
-		if(!empty($_REQUEST['city'])  && $_POST['city']!='undefined' && $_POST['city']!='null')
-		{		
-			$sqls4 = "INSERT INTO wp_usermeta
-			(`user_id`, `meta_key`, `meta_value`)
-			VALUES ('".$customerid."','billing_city','".$_REQUEST['city']."')";
-			$conn->query($sqls4);		
-		}
-		if(!empty($_REQUEST['state'])  && $_POST['state']!='undefined' && $_POST['state']!='null')
-		{		
-			$sqls4 = "INSERT INTO wp_usermeta
-			(`user_id`, `meta_key`, `meta_value`)
-			VALUES ('".$customerid."','billing_state','".$_REQUEST['state']."')";
-			$conn->query($sqls4);		
-		}
-		if(!empty($_REQUEST['postcode'])  && $_POST['postcode']!='undefined' && $_POST['postcode']!='null')
-		{		
-			$sqls4 = "INSERT INTO wp_usermeta
-			(`user_id`, `meta_key`, `meta_value`)
-			VALUES ('".$customerid."','billing_postcode','".$_REQUEST['postcode']."')";
-			$conn->query($sqls4);		
-		}
+    		if(!empty($_POST['last_name'])  && $_POST['last_name']!='undefined' && $_POST['last_name']!='null')
+    		{		
+    			$sqls4 = "INSERT INTO wp_usermeta
+    			(`user_id`, `meta_key`, `meta_value`)
+    			VALUES ('".$customerid."','last_name','".$_POST['lname_cus']."')";
+    			$conn->query($sqls4);		
+    		}
+    		
+    		if(!empty($_POST['cus_phone']) && $_POST['cus_phone']!='undefined' && $_POST['cus_phone']!='null')
+    		{		
+    			$sqls4 = "INSERT INTO wp_usermeta
+    			(`user_id`, `meta_key`, `meta_value`)
+    			VALUES ('".$customerid."','billing_phone','".$_POST['cus_phone']."')";
+    			$conn->query($sqls4);		
+    		}
+    		//billing_address_1
+    		if(!empty($_POST['cus_address'])  && $_POST['cus_address']!='undefined' && $_POST['cus_address']!='null')
+    		{		
+    			$sqls4 = "INSERT INTO wp_usermeta
+    			(`user_id`, `meta_key`, `meta_value`)
+    			VALUES ('".$customerid."','billing_address_1','".$_POST['cus_address']."')";
+    			$conn->query($sqls4);		
+    		}
+            //new
+    		if(!empty($_POST['address2'])  && $_POST['address2']!='undefined' && $_POST['address2']!='null')
+    		{		
+    			$sqls4 = "INSERT INTO wp_usermeta
+    			(`user_id`, `meta_key`, `meta_value`)
+    			VALUES ('".$customerid."','billing_address_2','".$_POST['address2']."')";
+    			$conn->query($sqls4);		
+    		}
+    		if(!empty($_POST['country'])  && $_POST['country']!='undefined' && $_POST['country']!='null')
+    		{		
+    			$sqls4 = "INSERT INTO wp_usermeta
+    			(`user_id`, `meta_key`, `meta_value`)
+    			VALUES ('".$customerid."','billing_country','".$_POST['country']."')";
+    			$conn->query($sqls4);		
+    		}
+    		if(!empty($_POST['city'])  && $_POST['city']!='undefined' && $_POST['city']!='null')
+    		{		
+    			$sqls4 = "INSERT INTO wp_usermeta
+    			(`user_id`, `meta_key`, `meta_value`)
+    			VALUES ('".$customerid."','billing_city','".$_POST['city']."')";
+    			$conn->query($sqls4);		
+    		}
+    		if(!empty($_POST['state'])  && $_POST['state']!='undefined' && $_POST['state']!='null')
+    		{		
+    			$sqls4 = "INSERT INTO wp_usermeta
+    			(`user_id`, `meta_key`, `meta_value`)
+    			VALUES ('".$customerid."','billing_state','".$_POST['state']."')";
+    			$conn->query($sqls4);		
+    		}
+    		if(!empty($_POST['postcode'])  && $_POST['postcode']!='undefined' && $_POST['postcode']!='null')
+    		{		
+    			$sqls4 = "INSERT INTO wp_usermeta
+    			(`user_id`, `meta_key`, `meta_value`)
+    			VALUES ('".$customerid."','billing_postcode','".$_POST['postcode']."')";
+    			$conn->query($sqls4);		
+    		}
 		//echo ("customer added $customerid");
 		}
 
@@ -257,48 +254,48 @@ require '../db.php';
 		}
 		
 		//billing_address_1
-		if(!empty($_REQUEST['cus_address']) && $_POST['cus_address']!='undefined' && $_POST['cus_address']!='null')
+		if(!empty($_POST['cus_address']) && $_POST['cus_address']!='undefined' && $_POST['cus_address']!='null')
 		{		
-			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_billing_address_1','".$_REQUEST['cus_address']."')";
+			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_billing_address_1','".$_POST['cus_address']."')";
 			$conn->query($sqls4);
-			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_shipping_address_1','".$_REQUEST['cus_address']."')";
+			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_shipping_address_1','".$_POST['cus_address']."')";
 			$conn->query($sqls4);
 		}
 
 		//new
-		if(!empty($_REQUEST['address2'])  && $_POST['address2']!='undefined' && $_POST['address2']!='null')
+		if(!empty($_POST['address2'])  && $_POST['address2']!='undefined' && $_POST['address2']!='null')
 		{		
-			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_billing_address_2','".$_REQUEST['address2']."')";
+			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_billing_address_2','".$_POST['address2']."')";
 			$conn->query($sqls4);	
-			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_shipping_address_2','".$_REQUEST['address2']."')";
+			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_shipping_address_2','".$_POST['address2']."')";
 			$conn->query($sqls4);	
 		}
-		if(!empty($_REQUEST['country'])  && $_POST['country']!='undefined' && $_POST['country']!='null')
+		if(!empty($_POST['country'])  && $_POST['country']!='undefined' && $_POST['country']!='null')
 		{		
-			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_billing_country','".$_REQUEST['country']."')";
+			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_billing_country','".$_POST['country']."')";
 			$conn->query($sqls4);	
-			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_shipping_country','".$_REQUEST['country']."')";
+			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_shipping_country','".$_POST['country']."')";
 			$conn->query($sqls4);	
 		}
-		if(!empty($_REQUEST['city'])  && $_POST['city']!='undefined' && $_POST['city']!='null')
+		if(!empty($_POST['city'])  && $_POST['city']!='undefined' && $_POST['city']!='null')
 		{		
-			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_billing_city','".$_REQUEST['city']."')";
+			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_billing_city','".$_POST['city']."')";
 			$conn->query($sqls4);		
-			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_shipping_city','".$_REQUEST['city']."')";
-			$conn->query($sqls4);		
-		}
-		if(!empty($_REQUEST['state'])  && $_POST['state']!='undefined' && $_POST['state']!='null')
-		{		
-			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_billing_state','".$_REQUEST['state']."')";
-			$conn->query($sqls4);	
-			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_shipping_state','".$_REQUEST['state']."')";
+			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_shipping_city','".$_POST['city']."')";
 			$conn->query($sqls4);		
 		}
-		if(!empty($_REQUEST['postcode'])  && $_POST['postcode']!='undefined' && $_POST['postcode']!='null')
+		if(!empty($_POST['state'])  && $_POST['state']!='undefined' && $_POST['state']!='null')
 		{		
-			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_billing_postcode','".$_REQUEST['postcode']."')";
+			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_billing_state','".$_POST['state']."')";
 			$conn->query($sqls4);	
-			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_shipping_postcode','".$_REQUEST['postcode']."')";
+			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_shipping_state','".$_POST['state']."')";
+			$conn->query($sqls4);		
+		}
+		if(!empty($_POST['postcode'])  && $_POST['postcode']!='undefined' && $_POST['postcode']!='null')
+		{		
+			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_billing_postcode','".$_POST['postcode']."')";
+			$conn->query($sqls4);	
+			$sqls4 = "INSERT INTO wp_postmeta (`post_id`, `meta_key`, `meta_value`) VALUES ('".$proid."','_shipping_postcode','".$_POST['postcode']."')";
 			$conn->query($sqls4);		
 		}
 		if($total_tax>0 && $proid>0)
@@ -352,38 +349,7 @@ require '../db.php';
 			VALUES ('".$poidf."','_line_total','".$_POST['fee_price']."')";
 			$conn->query($sqls2t);
 		}
-		$discount=0;
-		if(isset($_POST['discount_name'])  && $_POST['discount_amount']>0)
-		{
-			$discount=$_POST['discount_amount'];
-			$sqlpmf = "INSERT INTO wp_postmeta 
-			(`post_id`, `meta_key`, `meta_value`)
-			VALUES ('".$proid."','_discount','".$_POST['discount_name']."')";
-			$conn->query($sqlpmf);
-			
-			$sqlpmf1 = "INSERT INTO wp_postmeta 
-			(`post_id`, `meta_key`, `meta_value`)
-			VALUES ('".$proid."','_discount_amount','".$_POST['discount_amount']."')";
-			$conn->query($sqlpmf1);
-			
-			
-			$sqlsf = "INSERT INTO wp_woocommerce_order_items
-			(`order_item_name`, `order_item_type`, `order_id`)
-			VALUES ('".$_POST['discount_name']."','fee','".$proid."')";
-			$conn->query($sqlsf);
-		    $poidf = $conn->insert_id;
-		    
-
-			$sqls1t = "INSERT INTO wp_woocommerce_order_itemmeta
-			(`order_item_id`, `meta_key`, `meta_value`)
-			VALUES ('".$poidf."','label','Tax')";
-			$conn->query($sqls1t);
-			
-			$sqls2t = "INSERT INTO wp_woocommerce_order_itemmeta
-			(`order_item_id`, `meta_key`, `meta_value`)
-			VALUES ('".$poidf."','_line_total','".$_POST['discount_anount']."')";
-			$conn->query($sqls2t);
-		}
+		
 		$sp=0;
 		if(isset($_POST['shipping_type']) && $_POST['shipping_type']>0 && $_POST['shipping_price']>0)
 		{
@@ -415,7 +381,7 @@ require '../db.php';
 		
 		$sqlpm = "INSERT INTO wp_postmeta 
 		(`post_id`, `meta_key`, `meta_value`)
-		VALUES ('".$proid."','_order_total','".(($total - $discount)+$fp+$sp+$total_tax)."')";
+		VALUES ('".$proid."','_order_total','".(($total)+$fp+$sp+$total_tax)."')";
 		$conn->query($sqlpm);
 		
 		$sqlpm = "INSERT INTO wp_postmeta 

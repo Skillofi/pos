@@ -139,7 +139,7 @@ if(isset($_REQUEST['id'])){
 	$result_add = $conn->query($q);
 	$result_add = $result_add->fetch_assoc();
 
-	$email = $result_add? ($result_add['email']? $result_add['email'] : ($row1c? $row1c['email'] : '')) : '' ;
+	$email = $row1c? ($row1c['email']? $row1c['email'] : ($row1c? $row1c['email'] : '')) : '' ;
 	$fname = $result_add? ($result_add['first_name']? $result_add['first_name'] : ($row1c? $row1c['first_name'] : '')) : '';
 	$lname = $result_add? ($result_add['last_name']? $result_add['last_name'] : ($row1c? $row1c['last_name'] : '')) : '';
 	$add1 = $result_add? ($result_add['address']? $result_add['address'] : ($row1c? $row1c['address'] : '')) : '';
@@ -184,6 +184,7 @@ if(isset($_REQUEST['id'])){
 		'id'=>$result['ID'],
 		'date'=>$result['post_date'],
 		'time'=>$result['time'],
+		'cus_email'=>$email,
 		'customer'=>$display_name,
 		'c_address'=>$add1,
 		'c_address2'=>$add2,
@@ -201,7 +202,7 @@ if(isset($_REQUEST['id'])){
 		'gtotal' => number_format($grandTotal,2),
 		'paymentmethod'=> $paymentmethod,
 	);
-	echo(json_encode($invoice));
+	echo json_encode($invoice);
 } else {
 	echo 'No id set';
 }

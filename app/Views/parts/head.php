@@ -16,6 +16,11 @@
     <link href="<?= base_url('public/admin/plugins/custom/datatables/datatables.bundle.css') ?>" rel="stylesheet" type="text/css" />
     <link href="<?= base_url('public/admin/plugins/global/plugins.bundle.css') ?>" rel="stylesheet" type="text/css" />
     <link href="<?= base_url('public/admin/css/style.bundle.css') ?>" rel="stylesheet" type="text/css" />
+    <style>
+        .menu-title{
+            color:white !important;
+        }
+    </style>
     <script src="<?= base_url('public/admin/plugins/global/plugins.bundle.js') ?>"></script>
     <script src="<?= base_url('public/admin/js/scripts.bundle.js') ?>"></script>
     <script src="<?= base_url('public/admin/plugins/custom/datatables/datatables.bundle.js') ?>"></script>

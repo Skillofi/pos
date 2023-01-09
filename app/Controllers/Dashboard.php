@@ -42,8 +42,8 @@ class Dashboard extends BaseController
         $tax = $salesModel
             ->where('DATE(date_time) >= ', $from_date)
             ->where('DATE(date_time) <= ', $to_date)
-            ->selectSum('tax')
-            ->first()['tax'];
+            ->selectSum('tax_calc')
+            ->first()['tax_calc'];
 
         $salesCount = $salesModel
             ->where('DATE(date_time) >= ', $from_date)

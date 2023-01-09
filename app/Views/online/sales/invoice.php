@@ -81,7 +81,7 @@
         </tr>
         <tr>
             <td>Email :</td>
-            <td><?= strtolower($sale['email']) ?></td>
+            <td><?= strtolower($sale['cus_email']) ?></td>
             <td>Time:</td>
             <td><?= date('H:i:s', strtotime($sale['date'])) ?></td>
 

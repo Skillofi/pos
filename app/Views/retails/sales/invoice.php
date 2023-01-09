@@ -1,6 +1,5 @@
 <?php $formatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY); ?>
 <html>
-
 <body>
     <style>
         * {
@@ -9,7 +8,6 @@
             text-decoration: none;
             vertical-align: top;
         }
-
         h1 {
             font-size: 26px;
             font-weight: 600;
@@ -17,14 +15,12 @@
             text-align: center;
             margin-bottom: 70px;
         }
-
         table, th, td {
             border-collapse: collapse;
             padding: 10px;
             margin-left: 10px;
         }
     </style>
-
     <table style="width:100%">
         <tr style="border-bottom:10x solid black">
             <td width="30%">
@@ -40,8 +36,6 @@
             </td>
         </tr>
     </table>
-
-
     <table style="width:100%">
         <tr>
             <td>
@@ -50,37 +44,29 @@
             <td>
                 <h4>Date: <?= date('M d, Y', strtotime($sale['date_time'])) ?></h4>
             </td>
-
         </tr>
         <tr>
             <td>Buyer: </td>
             <td>Seller: </td>
-
         </tr>
         <tr>
             <td>Name : <?= ucwords($sale['name']) ?></td>
             <td>name: Cellphone World USA</td>
-
         </tr>
         <tr>
             <td>Phone : <?= ucwords($sale['phone']) ?></td>
             <td>Phone : <?= ucwords($setting['phone']) ?></td>
-
         </tr>
         <tr>
             <td>Email : <?= strtolower($sale['email']) ?></td>
             <td>Email : <?= strtolower($setting['email']) ?></td>
-
         </tr>
         <tr>
             <td>Address: <?= ucwords($sale['address']) ?> <br> <?= ucwords($sale['city']) ?> <?= ucwords($sale['state']) ?> <?= ucwords($sale['country']) ?></td>
             <td>Address: <?= ucwords($setting['address']) ?></td>
-
         </tr>
     </table>
     <!--product details-->
-
-
     <table style="width:100%">
         <tr>
             <td><strong>Sr.No</strong></td>
@@ -125,7 +111,6 @@
             <?php $taxCalc = (floatval($grandTotal) * floatval($sale['tax'])) / 100 ?>
             <td> <?= $formatter->formatCurrency($sale['tax_calc'], 'USD') ?></td>
         </tr>
-
         <tr>
             <td></td>
             <td></td>
@@ -134,61 +119,47 @@
             <td style="border-top: 1px solid black;"> <?= $formatter->formatCurrency(floatval($sale['grand_total']), 'USD') ?></td>
         </tr>
     </table>
-
-
     <!--Order Note-->
     <table style="width:100%">
         <tr>
             <td style="width:50%">
                 <h3>Order Note:</h3>
                 <p><?= $sale['sale_note'] ?></p>
-
-
             </td>
 
             <td style="width:50%">
                 <h3>Seller Note:</h3>
                 <p><?= $sale['staff_note'] ?></p>
             </td>
-
         </tr>
-
     </table>
-
-
     <!--terms-->
-
-
     <table style="width:100%">
         <tr>
             <td>
                 <h2>Terms & Conditions</h2>
                 <p><?= $setting['terms'] ?></p>
             </td>
-
-
         </tr>
-
     </table>
     <!--signature-->
-    <table style="width:100%">
-        <tr>
-            <td style="text-align:center">
-                <h4>Buyer Name</h4>
-                <h4><?= ucwords($sale['name']) ?></h4>
-            </td>
-            <td style="text-align:center">
-                <h4>Seller Name</h4>
-                <h4>Georgia Phone Case</h4>
-            </td>
-        </tr>
+    <!--<table style="width:100%">-->
+    <!--    <tr>-->
+    <!--        <td style="text-align:center">-->
+    <!--            <h4>Buyer Name</h4>-->
+    <!--            <h4><?= ucwords($sale['name']) ?></h4>-->
+    <!--        </td>-->
+    <!--        <td style="text-align:center">-->
+    <!--            <h4>Seller Name</h4>-->
+    <!--            <h4>Georgia Phone Case</h4>-->
+    <!--        </td>-->
+    <!--    </tr>-->
+    <!--    <tr>-->
+    <!--        <td style="text-align:center"><br><br><br><span>Signature</span></td>-->
+    <!--        <td style="text-align:center"><br><br><br><span>Signature</span></td>-->
+    <!--    </tr>-->
 
-        <tr>
-            <td style="text-align:center"><br><br><br><span>Signature</span></td>
-            <td style="text-align:center"><br><br><br><span>Signature</span></td>
-        </tr>
-
-    </table>
+    <!--</table>-->
 </body>
 
 </html>
