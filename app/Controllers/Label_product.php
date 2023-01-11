@@ -166,8 +166,8 @@ class Label_product extends BaseController
         
         $termsArray = explode(" ", $terms);
         foreach($termsArray as $value){
-            $productModal->Like('dnumber', $value);
-            $productModal->Like('make', $value);     
+            $productModal->Like('dnumber', "%{$value}%");
+            $productModal->ORLike('make', $value);     
         }
         $records = $productModal
         ->orderBy('dnumber', 'ASC')
@@ -176,7 +176,20 @@ class Label_product extends BaseController
     }
 
     public function print_label() {
-        
         return view('label/print/label');
+    }
+
+    public function labeling(){
+        $productId = $this->request->getPost('productId');
+        $size = $this->request->getPost('size');
+        $iemis = $this->request->getPost('iemi');
+        $labelProductModel = model(LabelProductModel::class);
+        $product =  $labelProductModel->where('id', $productId)->first();
+        $data = [
+            'product' => $product,
+            'size' => $size,
+            'iemis' => $iemis,
+        ];
+        return view('label/print/label-print', $data);
     }
 }

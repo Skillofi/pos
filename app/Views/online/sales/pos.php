@@ -938,7 +938,6 @@
                 obj
             },
             success: (result) => {
-                console.log(result)
                 if (result.status == 200) {
                     let sendInvoice = $("#emailInvoice").is(":checked");
                     if (sendInvoice) {
