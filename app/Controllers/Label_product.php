@@ -190,6 +190,7 @@ class Label_product extends BaseController
             'size' => $size,
             'iemis' => $iemis,
         ];
+        // C39E Barcode standard
         return view('label/print/label-print', $data);
     }
 }
