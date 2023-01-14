@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use Config\Services;
 use App\Models\LabelProductModel;
+// use Zend\Barcode\Object\Code39;
 
 class Label_product extends BaseController
 {
@@ -193,4 +194,25 @@ class Label_product extends BaseController
         // C39E Barcode standard
         return view('label/print/label-print', $data);
     }
+
+
+
+    public function barcode()
+	{
+        $options = ['text' => 'ZEND-FRAMEWORK', 'barHeight' => 40];
+        echo APPPATH . 'Library\Zend\Barcode';
+        // exit;
+        // Case 1: constructor
+        $barcode = new \ZendObject\Code39();
+        
+
+        // // Case 2: setOptions()
+        // $barcode = new Barcode\Object\Code39();
+        // $barcode->setOptions($options);
+
+        // // Case 3: individual setters
+        // $barcode = new Barcode\Object\Code39();
+        $barcode->setText('ZEND-FRAMEWORK')
+        ->setBarHeight(40);
+	}
 }
