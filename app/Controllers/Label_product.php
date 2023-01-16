@@ -199,20 +199,20 @@ class Label_product extends BaseController
 
     public function barcode()
 	{
-        $options = ['text' => 'ZEND-FRAMEWORK', 'barHeight' => 40];
-        echo APPPATH . 'Library\Zend\Barcode';
-        // exit;
-        // Case 1: constructor
-        $barcode = new \ZendObject\Code39();
+        // $options = ['text' => 'ZEND-FRAMEWORK', 'barHeight' => 40];
+        // echo APPPATH . 'Library\Zend\Barcode';
+        // // exit;
+        // // Case 1: constructor
+        // $barcode = new \ZendObject\Code39();
         
 
-        // // Case 2: setOptions()
-        // $barcode = new Barcode\Object\Code39();
-        // $barcode->setOptions($options);
+        // // // Case 2: setOptions()
+        // // $barcode = new Barcode\Object\Code39();
+        // // $barcode->setOptions($options);
 
-        // // Case 3: individual setters
-        // $barcode = new Barcode\Object\Code39();
-        $barcode->setText('ZEND-FRAMEWORK')
-        ->setBarHeight(40);
+        // // // Case 3: individual setters
+        // // $barcode = new Barcode\Object\Code39();
+        // $barcode->setText('ZEND-FRAMEWORK')
+        // ->setBarHeight(40);
 	}
 }

@@ -27,7 +27,7 @@
                                     <div class="form-group row iemi-div-1 mb-7">
                                         <div class="col-md-8">
                                             <label class="form-label">IEMI:</label>
-                                            <input type="text" class="form-control mb-2 mb-md-0 iemi" placeholder="Enter IEMI" name="iemi[]" />
+                                            <input type="text" class="form-control mb-2 mb-md-0 iemi" placeholder="Enter IEMI" name="iemi[]" data-id="1" />
                                         </div>
 
                                         <div class="col-md-4">
@@ -39,6 +39,8 @@
                                             </a>
                                         </div>
                                     </div>
+                                    <div class="row mt-3 text-center barcode-div-1"></div>
+                                    <textarea class="d-none barcode-1"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -93,7 +95,7 @@
                                             </td>
                                             <td class="">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" value="4*6" id="4-6" name="size" >
+                                                    <input class="form-check-input" type="radio" value="4*6" id="4-6" name="size">
                                                     <label class="form-check-label" for="4-6">4*6</label>
                                                 </div>
                                             </td>
@@ -101,6 +103,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div id="barcode"></div>
                             <div class="card-footer">
                                 <button onclick="window.location.reload();" class="btn btn-secondary">Cancel</button>
                                 <button class="btn btn-success">Generate</button>
@@ -112,6 +115,8 @@
         </div>
     </div>
 </div>
+<script src="<?= base_url('public/admin/js/vendors/plugins/barcode/code39.js') ?>"></script>
+<script src="<?= base_url('public/admin/js/vendors/plugins/html2canvas/html2canvas.min.js') ?>"></script>
 <script>
     const productSearchBox = {
         init: () => {
@@ -285,7 +290,7 @@
                 <div class="form-group row iemi-div-${iemiIndex}">
                     <div class="col-md-8 mb-7">
                         <label class="form-label">IEMI:</label>
-                        <input type="text" class="form-control mb-2 mb-md-0 iemi" placeholder="Enter IEMI" name="iemi[]" />
+                        <input type="text" class="form-control mb-2 mb-md-0 iemi" placeholder="Enter IEMI" name="iemi[]" data-id="${iemiIndex}" />
                     </div>
                     <div class="col-md-4">
                         <a href="javascript:;" class="btn btn-sm btn-light-success mt-3 mt-md-8 add add-${iemiIndex}">
@@ -295,6 +300,8 @@
                             <i class="la la-trash-o"></i>Delete
                         </a>
                     </div>
+                    <div class="row mt-3 text-center barcode-div-${iemiIndex}"></div>
+                    <textarea class="d-none barcode-${iemiIndex}" ></textarea>
                 </div>`;
             $(".iemi-div").append(updateDiv);
             $(`.delete-${iemiIndex}`).hide();
@@ -331,6 +338,22 @@
         if (errorFlag == 0) {
             $("#label-form")[0].submit();
         }
+    })
+
+    $(document).on("blur", ".iemi", function() {
+        let iemi = $(this).val();
+        let id = $(this).attr('data-id');
+        let barcode = DrawCode39Barcode(iemi, 0);
+        $(`.barcode-div-${id}`).html(barcode);
+
+        var convertMeToImg = $(`.barcode-div-${id}`)[0];
+
+        html2canvas(convertMeToImg).then(function(canvas) {
+            $(`.barcode-div-${id}`).html(canvas);
+            let canvasDiv = $(`.barcode-div-${id}`).children()[0];
+            let dataURL = canvasDiv.toDataURL();
+            $(`.barcode-${id}`).html(dataURL);
+        });
     })
 </script>
 <?= $this->endSection('content') ?>
