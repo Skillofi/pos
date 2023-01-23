@@ -177,42 +177,33 @@ class Label_product extends BaseController
     }
 
     public function print_label() {
-        return view('label/print/label');
+        if ($this->request->getMethod() === 'post') {
+            $productModal = new LabelProductModel();
+            $response =  $productModal->where('id', $_POST['productId'])->first();
+            $data= [
+                'data' => $_POST,
+                'product' => $response,
+            ];
+            if($_POST['size'] == "4*6"){
+                $html = view('label/print/label-print-4-6', $data);
+            }else{
+                $html = view('label/print/label-print-3-2', $data);
+            }
+            $options = new \Dompdf\Options();
+            $options->set('isRemoteEnabled', true);
+            $options->setTempDir('temp');
+            $dompdf = new \Dompdf\Dompdf();
+            $dompdf->setOptions($options);
+            $dompdf->loadHtml($html);
+            $dompdf->render();
+            $dompdf->stream();
+            return redirect()->to('/label_product/print_label');
+            // $dompdf->stream("dompdf_out.pdf", array("Attachment" => false));
+            // exit(0);
+        }else{
+            return view('label/print/label');
+        }
     }
 
-    public function labeling(){
-        $productId = $this->request->getPost('productId');
-        $size = $this->request->getPost('size');
-        $iemis = $this->request->getPost('iemi');
-        $labelProductModel = model(LabelProductModel::class);
-        $product =  $labelProductModel->where('id', $productId)->first();
-        $data = [
-            'product' => $product,
-            'size' => $size,
-            'iemis' => $iemis,
-        ];
-        // C39E Barcode standard
-        return view('label/print/label-print', $data);
-    }
-
-
-
-    public function barcode()
-	{
-        // $options = ['text' => 'ZEND-FRAMEWORK', 'barHeight' => 40];
-        // echo APPPATH . 'Library\Zend\Barcode';
-        // // exit;
-        // // Case 1: constructor
-        // $barcode = new \ZendObject\Code39();
-        
-
-        // // // Case 2: setOptions()
-        // // $barcode = new Barcode\Object\Code39();
-        // // $barcode->setOptions($options);
-
-        // // // Case 3: individual setters
-        // // $barcode = new Barcode\Object\Code39();
-        // $barcode->setText('ZEND-FRAMEWORK')
-        // ->setBarHeight(40);
-	}
+    
 }

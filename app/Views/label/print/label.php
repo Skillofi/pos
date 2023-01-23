@@ -1,6 +1,10 @@
 <?= $this->extend('base') ?>
 <?= $this->section('content') ?>
-
+<style>
+    .barcode-div {
+        width: 238px !important;
+    }
+</style>
 <div class="d-flex flex-column flex-column-fluid">
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
         <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
@@ -11,7 +15,7 @@
     </div>
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-xxl">
-            <form class="form w-100" novalidate="validate" id="label-form" method="POST" action="<?= base_url() ?>/label_product/labeling">
+            <form class="form w-100" novalidate="validate" id="label-form" method="POST" action="<?= base_url() ?>/label_product/print_label">
                 <?= csrf_field() ?>
                 <div class="col-md-12 row">
                     <div class="col-md-8">
@@ -39,8 +43,10 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="row mt-3 text-center barcode-div-1"></div>
-                                    <textarea class="d-none barcode-1"></textarea>
+                                    <div class="row mt-3 text-center">
+                                        <div class="barcode-div barcode-div-1"></div>
+                                    </div>
+                                    <textarea class="d-none barcode-1" name="barcode[]"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -300,8 +306,10 @@
                             <i class="la la-trash-o"></i>Delete
                         </a>
                     </div>
-                    <div class="row mt-3 text-center barcode-div-${iemiIndex}"></div>
-                    <textarea class="d-none barcode-${iemiIndex}" ></textarea>
+                    <div class="row mt-3 text-center">
+                        <div class="barcode-div barcode-div-${iemiIndex}"></div>
+                    </div>
+                    <textarea class="d-none barcode-${iemiIndex}" name="barcode[]"></textarea>
                 </div>`;
             $(".iemi-div").append(updateDiv);
             $(`.delete-${iemiIndex}`).hide();
@@ -342,18 +350,18 @@
 
     $(document).on("blur", ".iemi", function() {
         let iemi = $(this).val();
-        let id = $(this).attr('data-id');
-        let barcode = DrawCode39Barcode(iemi, 0);
-        $(`.barcode-div-${id}`).html(barcode);
-
-        var convertMeToImg = $(`.barcode-div-${id}`)[0];
-
-        html2canvas(convertMeToImg).then(function(canvas) {
-            $(`.barcode-div-${id}`).html(canvas);
-            let canvasDiv = $(`.barcode-div-${id}`).children()[0];
-            let dataURL = canvasDiv.toDataURL();
-            $(`.barcode-${id}`).html(dataURL);
-        });
+        if (iemi != "") {
+            let id = $(this).attr('data-id');
+            let barcode = DrawCode39Barcode(iemi, 0);
+            $(`.barcode-div-${id}`).html(barcode);
+            var convertMeToImg = $(`.barcode-div-${id}:first-child`)[0];
+            html2canvas(convertMeToImg).then(function(canvas) {
+                $(`.barcode-div-${id}`).html(canvas);
+                let canvasDiv = $(`.barcode-div-${id}`).children()[0];
+                let dataURL = canvasDiv.toDataURL();
+                $(`.barcode-${id}`).html(dataURL);
+            });
+        }
     })
 </script>
 <?= $this->endSection('content') ?>
