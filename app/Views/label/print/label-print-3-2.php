@@ -1,6 +1,4 @@
-<?php $formatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY); ?>
 <html>
-
 <body>
     <style>
         table,
@@ -9,7 +7,7 @@
             /* border-collapse: collapse; */
             /* padding: 4px; */
             /*margin-left: 10px;*/
-            font-size: 10.5px;
+            font-size: 14px;
             word-wrap: break-word;
             /* white-space: pre-wrap; */
             word-break: break-word;
@@ -34,17 +32,7 @@
             <table style="width: 100%;">
                 <tr>
                     <td width="100%" class="ml-15">
-                        <span style=" "><?= $product['dnumber'] ?>-<?= $product['model_no'] ?> <?= $product['make'] ?></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="100%" class="ml-15">
-                        <span style="">Make - <?= $product['make'] ?></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="100%" class="ml-15">
-                        <span style="">Storage GB- <?= $product['storage'] ?></span>
+                        <span style=" "><?= $product['dnumber'] ?>-<?= $product['brand'] ?> <?= $product['make'] ?>, <?= $product['storage'] ?> <?= $product['model_no'] ?></span>
                     </td>
                 </tr>
                 <tr>
@@ -69,7 +57,7 @@
                 </tr>
                 <tr>
                     <td style="text-align: center;">
-                        <img style=" width: 206px; height: 67px; margin-left: 0%;" src="<?= $data['barcode'][$iemiKey] ?>">
+                        <img style=" width: 100%; height: 77px; margin-left: 0%;" src="<?= $data['barcode'][$iemiKey] ?>">
                         <!-- <div style="width: 206px; height: 67px;margin-left: 15%; border:1px solid red"></div> -->
                     </td>
                 </tr>

@@ -1,4 +1,3 @@
-<?php $formatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY); ?>
 <html>
 
 <body>

@@ -2,7 +2,7 @@
 <?= $this->section('content') ?>
 <style>
     .barcode-div {
-        width: 238px !important;
+        width: 23em !important;
     }
 </style>
 <div class="d-flex flex-column flex-column-fluid">
@@ -43,14 +43,15 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="row mt-3 text-center">
+                                    <div class="row mt-3 text-center iemi-div-1">
                                         <div class="barcode-div barcode-div-1"></div>
                                     </div>
-                                    <textarea class="d-none barcode-1" name="barcode[]"></textarea>
                                 </div>
+                                <textarea class="d-none barcode-1 iemi-div-1" name="barcode[]"></textarea>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
@@ -121,7 +122,10 @@
         </div>
     </div>
 </div>
-<script src="<?= base_url('public/admin/js/vendors/plugins/barcode/code39.js') ?>"></script>
+</div>
+<!-- <script src="<?= base_url('public/admin/js/vendors/plugins/barcode/code39.js') ?>"></script> -->
+<script src="<?= base_url('public/admin/js/vendors/plugins/barcode/jquery-barcode.js') ?>"></script>
+<script src="<?= base_url('public/admin/js/vendors/plugins/barcode/jquery-barcode.min.js') ?>"></script>
 <script src="<?= base_url('public/admin/js/vendors/plugins/html2canvas/html2canvas.min.js') ?>"></script>
 <script>
     const productSearchBox = {
@@ -352,15 +356,25 @@
         let iemi = $(this).val();
         if (iemi != "") {
             let id = $(this).attr('data-id');
-            let barcode = DrawCode39Barcode(iemi, 0);
-            $(`.barcode-div-${id}`).html(barcode);
-            var convertMeToImg = $(`.barcode-div-${id}:first-child`)[0];
-            html2canvas(convertMeToImg).then(function(canvas) {
-                $(`.barcode-div-${id}`).html(canvas);
-                let canvasDiv = $(`.barcode-div-${id}`).children()[0];
-                let dataURL = canvasDiv.toDataURL();
-                $(`.barcode-${id}`).html(dataURL);
-            });
+            let inputValue = iemi;
+            let barcodeType = "code39";
+            var settings = {
+                output: "canvas", // renderer type
+                bgColor: '#FFFFFF', //background color
+                color: '#000000', // barcode color
+                barWidth: '1.5', // canvas width
+                barHeight: '70', // canvas height
+                moduleSize: '5',
+                posX: '15', // starting x position in canvas
+                posY: '30', // starting y position in canvas
+                addQuietZone: '0'
+            };
+            $(`.barcode-div-${id}`).html(`<canvas class="barcode-canvas-${id}" style="width:32em"></canvas>`)
+            $(`.barcode-canvas-${id}`).barcode(inputValue, barcodeType, settings);
+            var convertMeToImg = $(`.barcode-canvas-${id}`);
+            let canvasDiv = $(`.barcode-canvas-${id}`)[0];
+            let dataURL = canvasDiv.toDataURL();
+            $(`.barcode-${id}`).html(dataURL);
         }
     })
 </script>

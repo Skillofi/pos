@@ -169,6 +169,8 @@ class Label_product extends BaseController
         foreach($termsArray as $value){
             $productModal->Like('dnumber', "%{$value}%");
             $productModal->ORLike('make', $value);     
+            $productModal->ORLike('model_no', $value);     
+            $productModal->ORLike('brand', $value);     
         }
         $records = $productModal
         ->orderBy('dnumber', 'ASC')
